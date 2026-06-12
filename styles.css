@@ -20,6 +20,7 @@
     --table-row-hover-bg: #000080;
     --table-row-hover-text: #ffffff;
     --table-border: #e0e0e0;
+    --header-hover-bg: #dfdfdf;
     
     /* Badges (Light) */
     --badge-git-bg: #cffccf;
@@ -74,6 +75,7 @@
         --table-row-hover-bg: #223f6d;
         --table-row-hover-text: #ffffff;
         --table-border: #3c3c3c;
+        --header-hover-bg: #444444;
         
         /* Badges (Dark) */
         --badge-git-bg: #1a4d1a;
@@ -127,6 +129,7 @@
     --table-row-hover-bg: #223f6d;
     --table-row-hover-text: #ffffff;
     --table-border: #3c3c3c;
+    --header-hover-bg: #444444;
     
     /* Badges (Dark) */
     --badge-git-bg: #1a4d1a;
@@ -599,7 +602,7 @@ body {
 }
 
 .header-sort-row th[data-sort]:hover {
-    background-color: #dfdfdf;
+    background-color: var(--header-hover-bg);
 }
 
 .sort-indicator {
@@ -612,7 +615,7 @@ body {
 }
 
 .sort-indicator.active {
-    color: #000080; /* Dark blue when active */
+    color: var(--status-value-color); /* Matches theme color when active */
 }
 
 .col-filter {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>代码备份管家 v1.0.0 - Windows 98 Edition</title>
+    <title data-i18n="title">代码备份管家 v1.0.0 - Windows 98 Edition</title>
     <link rel="stylesheet" href="styles.css">
     <script>
         (function() {
@@ -53,28 +53,34 @@
             <!-- Menu Bar -->
             <div class="menu-bar">
                 <div class="menu-item dropdown-trigger" id="menu-file">
-                    文件(F)
+                    <span data-i18n="menu_file">文件(F)</span>
                     <!-- Dropdown Menu -->
                     <div class="dropdown-menu" id="file-dropdown">
-                        <div class="dropdown-item" id="file-opt-save">💾 保存配置...</div>
-                        <div class="dropdown-item" id="file-opt-load">📂 加载配置...</div>
+                        <div class="dropdown-item" id="file-opt-save" data-i18n="menu_save">💾 保存配置...</div>
+                        <div class="dropdown-item" id="file-opt-load" data-i18n="menu_load">📂 加载配置...</div>
                     </div>
                 </div>
-                <div class="menu-item" id="menu-trigger-settings">编辑(E)</div>
+                <div class="menu-item dropdown-trigger" id="menu-edit">
+                    <span data-i18n="menu_edit">编辑(E)</span>
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="edit-dropdown">
+                        <div class="dropdown-item" id="edit-opt-settings" data-i18n="menu_settings">⚙️ 全局同步配置...</div>
+                    </div>
+                </div>
                 <div class="menu-item dropdown-trigger" id="menu-theme">
-                    主题(T)
+                    <span data-i18n="menu_view">查看(V)</span>
                     <!-- Dropdown Menu -->
                     <div class="dropdown-menu" id="theme-dropdown">
                         <div class="dropdown-submenu">
-                            <span class="dropdown-item-label">🌓 主题设定</span>
+                            <span class="dropdown-item-label" data-i18n="menu_theme_settings">🌓 主题设定</span>
                             <div class="submenu-content">
-                                <div class="dropdown-item" id="theme-opt-dark" data-value="dark">🌙 深色主题 (默认)</div>
-                                <div class="dropdown-item" id="theme-opt-light" data-value="light">☀️ 浅色主题</div>
-                                <div class="dropdown-item" id="theme-opt-auto" data-value="auto">🌓 自动 (系统首选)</div>
+                                <div class="dropdown-item" id="theme-opt-dark" data-value="dark" data-i18n="menu_theme_dark">🌙 深色主题 (默认)</div>
+                                <div class="dropdown-item" id="theme-opt-light" data-value="light" data-i18n="menu_theme_light">☀️ 浅色主题</div>
+                                <div class="dropdown-item" id="theme-opt-auto" data-value="auto" data-i18n="menu_theme_auto">🌓 自动 (系统首选)</div>
                             </div>
                         </div>
                         <div class="dropdown-submenu">
-                            <span class="dropdown-item-label">🔤 字体设定</span>
+                            <span class="dropdown-item-label" data-i18n="menu_font_settings">🔤 字体设定</span>
                             <div class="submenu-content">
                                 <div class="dropdown-item font-opt" data-font="Microsoft YaHei" style="font-family: 'Microsoft YaHei', '微软雅黑', sans-serif;">微软雅黑</div>
                                 <div class="dropdown-item font-opt" data-font="SimSun" style="font-family: 'SimSun', '宋体', serif;">宋体 (SimSun)</div>
@@ -83,28 +89,36 @@
                                 <div class="dropdown-item font-opt" data-font="Arial" style="font-family: 'Arial', Helvetica, sans-serif;">Arial</div>
                                 <div class="dropdown-item font-opt" data-font="Times New Roman" style="font-family: 'Times New Roman', Times, serif;">Times New Roman</div>
                                 <div class="dropdown-item font-opt" data-font="Courier New" style="font-family: 'Courier New', Courier, monospace;">Courier New</div>
-                                <div class="dropdown-item font-opt" data-font="inherit">系统默认</div>
+                                <div class="dropdown-item font-opt" data-font="inherit" data-i18n="menu_default">系统默认</div>
                             </div>
                         </div>
                         <div class="dropdown-submenu">
-                            <span class="dropdown-item-label">📏 字号大小</span>
+                            <span class="dropdown-item-label" data-i18n="menu_font_size">📏 字号大小</span>
                             <div class="submenu-content">
-                                <div class="dropdown-item font-size-opt" data-size="12px">较小 (12px)</div>
-                                <div class="dropdown-item font-size-opt" data-size="14px">中等 (14px)</div>
-                                <div class="dropdown-item font-size-opt" data-size="16px">较大 (16px)</div>
-                                <div class="dropdown-item font-size-opt" data-size="18px">超大 (18px)</div>
-                                <div class="dropdown-item font-size-opt" data-size="inherit">系统默认</div>
+                                <div class="dropdown-item font-size-opt" data-size="12px" data-i18n="menu_size_small">较小 (12px)</div>
+                                <div class="dropdown-item font-size-opt" data-size="14px" data-i18n="menu_size_medium">中等 (14px)</div>
+                                <div class="dropdown-item font-size-opt" data-size="16px" data-i18n="menu_size_large">较大 (16px)</div>
+                                <div class="dropdown-item font-size-opt" data-size="18px" data-i18n="menu_size_xlarge">超大 (18px)</div>
+                                <div class="dropdown-item font-size-opt" data-size="inherit" data-i18n="menu_default">系统默认</div>
                             </div>
                         </div>
                         <div class="dropdown-separator"></div>
-                        <div class="dropdown-item" id="theme-opt-reset">🔄 恢复默认设置</div>
+                        <div class="dropdown-submenu">
+                            <span class="dropdown-item-label" data-i18n="menu_lang">🌐 语言 / Language</span>
+                            <div class="submenu-content">
+                                <div class="dropdown-item lang-opt" data-lang="zh">简体中文</div>
+                                <div class="dropdown-item lang-opt" data-lang="en">English</div>
+                            </div>
+                        </div>
+                        <div class="dropdown-separator"></div>
+                        <div class="dropdown-item" id="theme-opt-reset" data-i18n="menu_reset">🔄 恢复默认设置</div>
                     </div>
                 </div>
                 <div class="menu-item dropdown-trigger" id="menu-help">
-                    帮助(H)
+                    <span data-i18n="menu_help">帮助(H)</span>
                     <!-- Dropdown Menu -->
                     <div class="dropdown-menu" id="help-dropdown">
-                        <div class="dropdown-item" id="help-opt-homepage">🌐 项目主页</div>
+                        <div class="dropdown-item" id="help-opt-homepage" data-i18n="menu_homepage">🌐 项目主页</div>
                     </div>
                 </div>
             </div>
@@ -112,38 +126,38 @@
             <!-- Toolbar -->
             <div class="toolbar">
                 <button id="btn-sync-active" class="win98-btn">
-                    <span class="btn-text">🔄 更新全部已备份项目</span>
+                    <span class="btn-text" data-i18n="btn_sync_active">🔄 更新全部已备份项目</span>
                 </button>
                 <button id="btn-settings" class="win98-btn">
-                    <span class="btn-text">⚙️ 备份同步配置...</span>
+                    <span class="btn-text" data-i18n="btn_settings">⚙️ 备份同步配置...</span>
                 </button>
             </div>
 
             <!-- Merged Stats Bar (Inline status panels) -->
             <div class="stats-bar-inline">
                 <div class="status-panel">
-                    <span class="status-label">检测文件夹数:</span>
+                    <span class="status-label" data-i18n="stat_total_folders">检测文件夹数:</span>
                     <span id="stat-total-repos" class="status-value">0</span>
                 </div>
                 <div class="status-panel">
-                    <span class="status-label">Git仓库数:</span>
+                    <span class="status-label" data-i18n="stat_git_repos">Git仓库数:</span>
                     <span id="stat-git-repos" class="status-value">0</span>
                 </div>
                 <div class="status-panel">
-                    <span class="status-label">待备份修改:</span>
+                    <span class="status-label" data-i18n="stat_dirty_repos">待备份修改:</span>
                     <span id="stat-dirty-repos" class="status-value">0</span>
                 </div>
                 <div class="status-panel">
-                    <span class="status-label">备份目标目的地:</span>
-                    <span id="stat-backup-dest-name" class="status-value truncate" title="未设置">未设置</span>
+                    <span class="status-label" data-i18n="stat_backup_dest">备份目标目的地:</span>
+                    <span id="stat-backup-dest-name" class="status-value truncate" title="未设置" data-i18n="stat_not_set">未设置</span>
                 </div>
             </div>
 
             <!-- Filter Bar -->
             <div class="filter-bar">
                 <div class="search-box">
-                    <label for="repo-search" style="margin-right: 6px;">过滤项目:</label>
-                    <input type="text" id="repo-search" placeholder="输入关键字筛选项目...">
+                    <label for="repo-search" style="margin-right: 6px;" data-i18n="filter_projects">过滤项目:</label>
+                    <input type="text" id="repo-search" placeholder="输入关键字筛选项目..." data-i18n-placeholder="search_placeholder">
                 </div>
             </div>
 
@@ -153,51 +167,51 @@
                     <table class="repo-table">
                         <thead>
                             <tr class="header-sort-row">
-                                <th data-sort="name" style="cursor: pointer;">项目名称<span class="sort-indicator"> ▲</span></th>
-                                <th data-sort="path" style="cursor: pointer;">本地路径<span class="sort-indicator"> ▲</span></th>
-                                <th data-sort="is_git" style="cursor: pointer;">Git状态<span class="sort-indicator"> ▲</span></th>
-                                <th data-sort="file_count" style="cursor: pointer;">文件数<span class="sort-indicator"> ▲</span></th>
-                                <th data-sort="has_changes" style="cursor: pointer;">修改状态<span class="sort-indicator"> ▲</span></th>
-                                <th data-sort="last_sync_time" style="cursor: pointer;">上次备份时间<span class="sort-indicator"> ▲</span></th>
-                                <th data-sort="last_sync_status" style="cursor: pointer;">备份状态<span class="sort-indicator"> ▲</span></th>
-                                <th>操作</th>
+                                <th data-sort="name" style="cursor: pointer;"><span data-i18n="th_name">项目名称</span><span class="sort-indicator"> ▲</span></th>
+                                <th data-sort="path" style="cursor: pointer;"><span data-i18n="th_path">本地路径</span><span class="sort-indicator"> ▲</span></th>
+                                <th data-sort="is_git" style="cursor: pointer;"><span data-i18n="th_git_status">Git状态</span><span class="sort-indicator"> ▲</span></th>
+                                <th data-sort="file_count" style="cursor: pointer;"><span data-i18n="th_files">文件数</span><span class="sort-indicator"> ▲</span></th>
+                                <th data-sort="has_changes" style="cursor: pointer;"><span data-i18n="th_changes">修改状态</span><span class="sort-indicator"> ▲</span></th>
+                                <th data-sort="last_sync_time" style="cursor: pointer;"><span data-i18n="th_last_backup">上次备份时间</span><span class="sort-indicator"> ▲</span></th>
+                                <th data-sort="last_sync_status" style="cursor: pointer;"><span data-i18n="th_backup_status">备份状态</span><span class="sort-indicator"> ▲</span></th>
+                                <th data-i18n="th_actions">操作</th>
                             </tr>
                             <tr class="header-filter-row">
-                                <th><input type="text" id="filter-name" class="col-filter" placeholder="筛选名称..."></th>
-                                <th><input type="text" id="filter-path" class="col-filter" placeholder="筛选路径..."></th>
+                                <th><input type="text" id="filter-name" class="col-filter" placeholder="筛选名称..." data-i18n-placeholder="filter_name_placeholder"></th>
+                                <th><input type="text" id="filter-path" class="col-filter" placeholder="筛选路径..." data-i18n-placeholder="filter_path_placeholder"></th>
                                 <th>
                                     <select id="filter-is-git" class="col-filter">
-                                        <option value="">全部</option>
-                                        <option value="git">Git 仓库</option>
-                                        <option value="nogit">非 Git</option>
+                                        <option value="" data-i18n="opt_all">全部</option>
+                                        <option value="git" data-i18n="opt_git">Git 仓库</option>
+                                        <option value="nogit" data-i18n="opt_nogit">非 Git</option>
                                     </select>
                                 </th>
-                                <th><input type="number" id="filter-file-count" class="col-filter" placeholder="最少..." min="0"></th>
+                                <th><input type="number" id="filter-file-count" class="col-filter" placeholder="最少..." min="0" data-i18n-placeholder="filter_min_placeholder"></th>
                                 <th>
                                     <select id="filter-has-changes" class="col-filter">
-                                        <option value="">全部</option>
-                                        <option value="dirty">有修改</option>
-                                        <option value="clean">已提交</option>
-                                        <option value="nogit">非 Git</option>
+                                        <option value="" data-i18n="opt_all">全部</option>
+                                        <option value="dirty" data-i18n="opt_dirty">有修改</option>
+                                        <option value="clean" data-i18n="opt_clean">已提交</option>
+                                        <option value="nogit" data-i18n="opt_nogit">非 Git</option>
                                     </select>
                                 </th>
                                 <th></th>
                                 <th>
                                     <select id="filter-last-sync-status" class="col-filter">
-                                        <option value="">全部</option>
-                                        <option value="Success">成功</option>
-                                        <option value="Failed">失败</option>
-                                        <option value="Pending">待备份</option>
+                                        <option value="" data-i18n="opt_all">全部</option>
+                                        <option value="Success" data-i18n="opt_success">成功</option>
+                                        <option value="Failed" data-i18n="opt_failed">失败</option>
+                                        <option value="Pending" data-i18n="opt_pending">待备份</option>
                                     </select>
                                 </th>
                                 <th style="text-align: center;">
-                                    <button id="btn-clear-filters" class="win98-btn" style="padding: 1px 4px; font-size: inherit; width: 100%;">重置</button>
+                                    <button id="btn-clear-filters" class="win98-btn" style="padding: 1px 4px; font-size: inherit; width: 100%;" data-i18n="btn_reset">重置</button>
                                 </th>
                             </tr>
                         </thead>
                         <tbody id="repo-list">
                             <tr>
-                                <td colspan="8" class="text-center">正在加载项目列表中，请稍候...</td>
+                                <td colspan="8" class="text-center" data-i18n="loading_list">正在加载项目列表中，请稍候...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -210,7 +224,7 @@
     <div id="settings-modal" class="modal-overlay">
         <div class="window dialog-box">
             <div class="title-bar">
-                <div class="title-bar-text">全局同步配置</div>
+                <div class="title-bar-text" data-i18n="modal_title">全局同步配置</div>
                 <div class="title-bar-controls">
                     <button id="btn-close-settings" aria-label="Close"></button>
                 </div>
@@ -219,38 +233,38 @@
                 <form id="settings-form">
                     <!-- Backup Destination -->
                     <fieldset class="group-box">
-                        <legend>备份目标位置</legend>
+                        <legend data-i18n="legend_backup_dest">备份目标位置</legend>
                         <div class="form-group-win98">
-                            <label for="input-backup-dest">备份目标文件夹路径 (例如本地盘、外部存储或云盘同步路径):</label>
+                            <label for="input-backup-dest" data-i18n="label_backup_dest">备份目标文件夹路径 (例如本地盘、外部存储或云盘同步路径):</label>
                             <div class="input-row">
                                 <input type="text" id="input-backup-dest" placeholder="选择或输入备份目标路径" required>
-                                <button type="button" id="btn-browse-dest" class="win98-btn">选择...</button>
+                                <button type="button" id="btn-browse-dest" class="win98-btn" data-i18n="btn_browse">选择...</button>
                             </div>
-                            <p class="form-help">您可以选择任意本地硬盘分区文件夹、外部存储设备挂载点，或者云端硬盘（如 Google Drive, OneDrive）的同步映射目录。</p>
+                            <p class="form-help" data-i18n="help_backup_dest">您可以选择任意本地硬盘分区文件夹、外部存储设备挂载点，或者云端硬盘（如 Google Drive, OneDrive）的同步映射目录。</p>
                         </div>
                     </fieldset>
 
                     <!-- Monitored Folders -->
                     <fieldset class="group-box">
-                        <legend>监控的本地代码目录</legend>
+                        <legend data-i18n="legend_monitored">监控的本地代码目录</legend>
                         <div class="form-group-win98">
-                            <label>正在监控的主目录列表:</label>
+                            <label data-i18n="label_monitored">正在监控的主目录列表:</label>
                             <div class="folder-list-box">
                                 <ul id="monitored-folders-list" class="win98-list">
                                     <!-- Dynamic List -->
                                 </ul>
                             </div>
                             <div class="add-folder-row">
-                                <input type="text" id="input-new-folder" placeholder="点击右侧“选择...”浏览文件夹..." readonly>
-                                <button type="button" id="btn-browse-folder" class="win98-btn">选择...</button>
-                                <button type="button" id="btn-add-folder" class="win98-btn">添加</button>
+                                <input type="text" id="input-new-folder" placeholder="点击右侧“选择...”浏览文件夹..." readonly data-i18n-placeholder="add_folder_placeholder">
+                                <button type="button" id="btn-browse-folder" class="win98-btn" data-i18n="btn_browse">选择...</button>
+                                <button type="button" id="btn-add-folder" class="win98-btn" data-i18n="btn_add">添加</button>
                             </div>
                         </div>
                     </fieldset>
 
                     <div class="form-actions">
-                        <button type="submit" class="win98-btn default-btn">确定</button>
-                        <button type="button" id="btn-cancel-settings" class="win98-btn">取消</button>
+                        <button type="submit" class="win98-btn default-btn" data-i18n="btn_ok">确定</button>
+                        <button type="button" id="btn-cancel-settings" class="win98-btn" data-i18n="btn_cancel">取消</button>
                     </div>
                 </form>
             </div>
@@ -260,12 +274,12 @@
     <!-- Notification Dialog -->
     <div id="toast" class="toast-win98 window">
         <div class="title-bar">
-            <div class="title-bar-text" id="toast-title">系统信息</div>
+            <div class="title-bar-text" id="toast-title" data-i18n="toast_title">系统提示</div>
         </div>
         <div class="window-body toast-body">
             <div class="toast-message-container">
                 <span class="info-icon">ℹ️</span>
-                <span id="toast-message">提示内容</span>
+                <span id="toast-message" data-i18n="toast_msg">提示内容</span>
             </div>
         </div>
     </div>

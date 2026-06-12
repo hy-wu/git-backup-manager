@@ -52,7 +52,14 @@
             
             <!-- Menu Bar -->
             <div class="menu-bar">
-                <div class="menu-item">文件(F)</div>
+                <div class="menu-item dropdown-trigger" id="menu-file">
+                    文件(F)
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="file-dropdown">
+                        <div class="dropdown-item" id="file-opt-save">💾 保存配置...</div>
+                        <div class="dropdown-item" id="file-opt-load">📂 加载配置...</div>
+                    </div>
+                </div>
                 <div class="menu-item" id="menu-trigger-settings">编辑(E)</div>
                 <div class="menu-item dropdown-trigger" id="menu-theme">
                     主题(T)
@@ -93,7 +100,13 @@
                         <div class="dropdown-item" id="theme-opt-reset">🔄 恢复默认设置</div>
                     </div>
                 </div>
-                <div class="menu-item">帮助(H)</div>
+                <div class="menu-item dropdown-trigger" id="menu-help">
+                    帮助(H)
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="help-dropdown">
+                        <div class="dropdown-item" id="help-opt-homepage">🌐 项目主页</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Toolbar -->

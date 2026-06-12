@@ -616,6 +616,89 @@ if (resetOpt) {
     };
 }
 
+// File menu action: Save Configuration
+const fileOptSave = document.getElementById('file-opt-save');
+if (fileOptSave) {
+    fileOptSave.onclick = async (e) => {
+        e.stopPropagation();
+        try {
+            const response = await fetch('/api/config');
+            if (!response.ok) throw new Error('获取配置失败');
+            const config = await response.json();
+            
+            // Create blob and trigger download
+            const blob = new Blob([JSON.stringify(config, null, 4)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'git-backup-config.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('配置已成功导出并下载！');
+        } catch (err) {
+            showToast(`保存配置失败: ${err.message}`);
+        }
+    };
+}
+
+// File menu action: Load Configuration
+const fileOptLoad = document.getElementById('file-opt-load');
+if (fileOptLoad) {
+    fileOptLoad.onclick = (e) => {
+        e.stopPropagation();
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = async (ev) => {
+                try {
+                    const config = JSON.parse(ev.target.result);
+                    // Validate basic configuration structure
+                    if (!config || (config.backup_dest === undefined && config.monitored_folders === undefined)) {
+                        throw new Error('配置文件格式无效或不匹配');
+                    }
+                    
+                    // POST the configuration to /api/config
+                    const response = await fetch('/api/config', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            backup_dest: config.backup_dest || '',
+                            monitored_folders: config.monitored_folders || []
+                        })
+                    });
+                    
+                    if (!response.ok) throw new Error('同步配置到服务器失败');
+                    
+                    // Refresh app configuration
+                    await fetchConfig();
+                    await fetchRepos();
+                    showToast('配置已成功加载并更新！');
+                } catch (err) {
+                    showToast(`加载配置失败: ${err.message}`);
+                }
+            };
+            reader.readAsText(file);
+        };
+        input.click();
+    };
+}
+
+// Help menu action: Project Homepage
+const helpOptHomepage = document.getElementById('help-opt-homepage');
+if (helpOptHomepage) {
+    helpOptHomepage.onclick = (e) => {
+        e.stopPropagation();
+        window.open('https://github.com/hy-wu/git-backup-manager', '_blank');
+    };
+}
+
 // Initial Load
 (async function init() {
     applyTheme(currentTheme);

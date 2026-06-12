@@ -717,7 +717,9 @@ body {
 
 .group-box legend {
     font-weight: bold;
-    padding: 0 4px;
+    padding: 0 6px;
+    background-color: var(--surface-gray);
+    color: var(--text-color);
 }
 
 /* Form layouts */

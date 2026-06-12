@@ -108,6 +108,10 @@ async function fetchRepos() {
 
 // Render Repositories Table
 function renderRepos() {
+    // Sync custom selects with native values (e.g. after reset)
+    if (typeof syncCustomSelects === 'function') {
+        syncCustomSelects();
+    }
     // 1. General Search Filter
     const query = repoSearch.value.toLowerCase().trim();
     
@@ -699,10 +703,109 @@ if (helpOptHomepage) {
     };
 }
 
+// Sync Custom Selects Helper
+function syncCustomSelects() {
+    const customSelects = document.querySelectorAll('.win98-custom-select');
+    customSelects.forEach(customSelect => {
+        const selectId = customSelect.dataset.selectId;
+        const nativeSelect = document.getElementById(selectId);
+        if (nativeSelect) {
+            const displayVal = customSelect.querySelector('.select-value-display');
+            const selectedOpt = nativeSelect.options[nativeSelect.selectedIndex];
+            if (displayVal && selectedOpt) {
+                displayVal.textContent = selectedOpt.text;
+            }
+            // Update selected class in custom options list
+            const customOptions = customSelect.querySelectorAll('.select-custom-option');
+            customOptions.forEach(opt => {
+                opt.classList.toggle('selected', opt.dataset.value === nativeSelect.value);
+            });
+        }
+    });
+}
+
+// Initialize Custom Select Component
+function initCustomSelects() {
+    const nativeSelects = document.querySelectorAll('select.col-filter');
+    
+    nativeSelects.forEach(select => {
+        // Hide native select
+        select.style.display = 'none';
+        
+        // Create custom select container
+        const customSelect = document.createElement('div');
+        customSelect.className = 'win98-custom-select';
+        customSelect.dataset.selectId = select.id;
+        
+        // Value display box
+        const displayVal = document.createElement('div');
+        displayVal.className = 'select-value-display';
+        displayVal.textContent = select.options[select.selectedIndex]?.text || '';
+        customSelect.appendChild(displayVal);
+        
+        // Dropdown arrow button
+        const arrowBtn = document.createElement('div');
+        arrowBtn.className = 'select-arrow-btn';
+        arrowBtn.textContent = '▼';
+        customSelect.appendChild(arrowBtn);
+        
+        // Custom Options List Container
+        const optionsList = document.createElement('div');
+        optionsList.className = 'select-options-list';
+        
+        Array.from(select.options).forEach(opt => {
+            const customOpt = document.createElement('div');
+            customOpt.className = 'select-custom-option';
+            customOpt.dataset.value = opt.value;
+            customOpt.textContent = opt.text;
+            if (opt.selected) {
+                customOpt.classList.add('selected');
+            }
+            
+            customOpt.onclick = (e) => {
+                e.stopPropagation();
+                select.value = opt.value;
+                displayVal.textContent = opt.text;
+                optionsList.querySelectorAll('.select-custom-option').forEach(o => o.classList.remove('selected'));
+                customOpt.classList.add('selected');
+                customSelect.classList.remove('active');
+                
+                // Fire native events so filtering triggers
+                select.dispatchEvent(new Event('change'));
+                select.dispatchEvent(new Event('input'));
+            };
+            
+            optionsList.appendChild(customOpt);
+        });
+        
+        customSelect.appendChild(optionsList);
+        
+        // Toggle active status
+        customSelect.onclick = (e) => {
+            e.stopPropagation();
+            document.querySelectorAll('.win98-custom-select').forEach(cs => {
+                if (cs !== customSelect) cs.classList.remove('active');
+            });
+            customSelect.classList.toggle('active');
+        };
+        
+        // Insert custom select after native one
+        select.parentNode.insertBefore(customSelect, select.nextSibling);
+    });
+    
+    // Clicking outside closes all lists
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.win98-custom-select').forEach(cs => {
+            cs.classList.remove('active');
+        });
+    });
+}
+
 // Initial Load
 (async function init() {
     applyTheme(currentTheme);
     applyFontsAndSize();
+    initCustomSelects();
     await fetchConfig();
     // If not configured, pop up the settings modal automatically
     if (!localConfig.backup_dest || localConfig.monitored_folders.length === 0) {

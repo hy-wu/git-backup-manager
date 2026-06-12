@@ -3,168 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Git Backup Manager - 代码备份管家</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>代码备份管家 v1.0.0 - Windows 98 Edition</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="app-container">
-        <!-- Header -->
-        <header class="main-header">
-            <div class="logo-area">
-                <div class="logo-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-                        <circle cx="12" cy="12" r="4"/>
-                    </svg>
-                </div>
-                <div class="logo-text">
-                    <h1>Git Flow</h1>
-                    <p>Clean Code Backup</p>
+        <!-- System Stats Monitor Window -->
+        <div class="window status-window">
+            <div class="title-bar">
+                <div class="title-bar-text">系统监视器 - 备份资源统计</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Minimize" tabindex="-1"></button>
+                    <button aria-label="Maximize" tabindex="-1"></button>
                 </div>
             </div>
-            <div class="global-actions">
-                <button id="btn-settings" class="btn btn-secondary" title="同步配置">
-                    <span class="btn-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                    </span>
+            <div class="window-body status-container">
+                <div class="status-panel">
+                    <span class="status-label">检测文件夹数:</span>
+                    <span id="stat-total-repos" class="status-value">0</span>
+                </div>
+                <div class="status-panel">
+                    <span class="status-label">Git仓库数:</span>
+                    <span id="stat-git-repos" class="status-value">0</span>
+                </div>
+                <div class="status-panel">
+                    <span class="status-label">待备份修改:</span>
+                    <span id="stat-dirty-repos" class="status-value">0</span>
+                </div>
+                <div class="status-panel">
+                    <span class="status-label">备份云盘目的地:</span>
+                    <span id="stat-backup-dest-name" class="status-value truncate" title="未设置">未设置</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Workspace Window -->
+        <div class="window main-window">
+            <div class="title-bar">
+                <div class="title-bar-text">代码备份管家 (Git Flow Backup Manager)</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Help" tabindex="-1"></button>
+                    <button aria-label="Close" tabindex="-1" onclick="window.close()"></button>
+                </div>
+            </div>
+            
+            <!-- Menu Bar -->
+            <div class="menu-bar">
+                <div class="menu-item">文件(F)</div>
+                <div class="menu-item" id="menu-trigger-settings">编辑(E)</div>
+                <div class="menu-item">工具(T)</div>
+                <div class="menu-item">帮助(H)</div>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <button id="btn-sync-active" class="win98-btn">
+                    <span class="btn-text">🔄 更新全部已备份项目</span>
                 </button>
+                <button id="btn-settings" class="win98-btn">
+                    <span class="btn-text">⚙️ 备份同步配置...</span>
+                </button>
+                <div class="toolbar-divider"></div>
+                <div class="search-box">
+                    <label for="repo-search" style="font-size: 11px; margin-right: 4px;">过滤项目:</label>
+                    <input type="text" id="repo-search" placeholder="输入关键字筛选...">
+                </div>
             </div>
-        </header>
 
-        <!-- Stats Dashboard -->
-        <section class="dashboard-stats">
-            <div class="stat-card">
-                <div class="stat-icon purple">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                </div>
-                <div class="stat-info">
-                    <h3 id="stat-total-repos">0</h3>
-                    <p>检测文件夹</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon green">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                </div>
-                <div class="stat-info">
-                    <h3 id="stat-git-repos">0</h3>
-                    <p>Git仓库项目</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon yellow">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                </div>
-                <div class="stat-info">
-                    <h3 id="stat-dirty-repos">0</h3>
-                    <p>有未提交修改</p>
+            <div class="window-body main-body">
+                <!-- List View (Table container) -->
+                <div class="list-view-container">
+                    <table class="repo-table">
+                        <thead>
+                            <tr>
+                                <th>项目名称</th>
+                                <th>本地路径</th>
+                                <th>Git状态</th>
+                                <th>文件数</th>
+                                <th>修改状态</th>
+                                <th>上次备份时间</th>
+                                <th>备份状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="repo-list">
+                            <tr>
+                                <td colspan="8" class="text-center">正在加载项目列表中，请稍候...</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon blue">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83M22 12A10 10 0 0 0 12 2v10z"/></svg>
-                </div>
-                <div class="stat-info">
-                    <h3 id="stat-backup-dest-name" class="truncate">未设置</h3>
-                    <p>备份目的地</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <section class="repos-panel card">
-                <div class="card-header">
-                    <h2>项目库备份中心</h2>
-                    <div class="header-actions">
-                        <button id="btn-sync-active" class="btn btn-primary" title="仅备份以前已经成功备份过的仓库">
-                            <span class="btn-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                            </span>
-                            <span>更新已备份项目</span>
-                        </button>
-                        <div class="search-box">
-                            <input type="text" id="repo-search" placeholder="搜索本地项目...">
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="repo-table">
-                            <thead>
-                                <tr>
-                                    <th>项目名称</th>
-                                    <th>本地路径</th>
-                                    <th>Git状态</th>
-                                    <th>文件数</th>
-                                    <th>修改状态</th>
-                                    <th>上次备份时间</th>
-                                    <th>备份状态</th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody id="repo-list">
-                                <tr>
-                                    <td colspan="8" class="text-center">正在加载项目列表中，请稍候...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-        </main>
+        </div>
     </div>
 
-    <!-- Settings Modal -->
+    <!-- Settings Dialog -->
     <div id="settings-modal" class="modal-overlay">
-        <div class="modal card">
-            <div class="card-header">
-                <h2>全局同步配置</h2>
-                <button id="btn-close-settings" class="btn-close">&times;</button>
+        <div class="window dialog-box">
+            <div class="title-bar">
+                <div class="title-bar-text">全局同步配置</div>
+                <div class="title-bar-controls">
+                    <button id="btn-close-settings" aria-label="Close"></button>
+                </div>
             </div>
-            <div class="card-body">
+            <div class="window-body">
                 <form id="settings-form">
                     <!-- Backup Destination -->
-                    <div class="form-group">
-                        <label for="input-backup-dest">云盘备份目标文件夹（例如 Google Drive 虚拟盘路径）</label>
-                        <div class="input-with-button">
-                            <input type="text" id="input-backup-dest" placeholder="请选择或输入备份目标路径" required>
-                            <button type="button" id="btn-browse-dest" class="btn btn-secondary">选择...</button>
+                    <fieldset class="group-box">
+                        <legend>备份目标位置</legend>
+                        <div class="form-group-win98">
+                            <label for="input-backup-dest">云盘备份目标文件夹（例如 Google Drive 虚拟盘路径）:</label>
+                            <div class="input-row">
+                                <input type="text" id="input-backup-dest" placeholder="选择或输入备份目标路径" required>
+                                <button type="button" id="btn-browse-dest" class="win98-btn">选择...</button>
+                            </div>
+                            <p class="form-help">建议直接选择 Google Drive 虚拟盘（例如 D:\我的云端硬盘 或 G:\我的云端硬盘）下的某个文件夹。</p>
                         </div>
-                        <p class="form-help">建议直接选择 Google Drive 虚拟盘（例如 D:\我的云端硬盘 或 G:\我的云端硬盘）下的某个文件夹。</p>
-                    </div>
+                    </fieldset>
 
                     <!-- Monitored Folders -->
-                    <div class="form-group">
-                        <label>监控的本地代码主目录（将扫描此目录下的子文件夹）</label>
-                        <div class="folder-list-container">
-                            <ul id="monitored-folders-list" class="folder-list">
-                                <!-- Dynamic List -->
-                            </ul>
+                    <fieldset class="group-box">
+                        <legend>监控的本地代码目录</legend>
+                        <div class="form-group-win98">
+                            <label>正在监控的主目录列表:</label>
+                            <div class="folder-list-box">
+                                <ul id="monitored-folders-list" class="win98-list">
+                                    <!-- Dynamic List -->
+                                </ul>
+                            </div>
                             <div class="add-folder-row">
-                                <input type="text" id="input-new-folder" placeholder="选择或输入要监控的文件夹绝对路径">
-                                <button type="button" id="btn-browse-folder" class="btn btn-secondary">选择...</button>
-                                <button type="button" id="btn-add-folder" class="btn btn-primary">添加</button>
+                                <input type="text" id="input-new-folder" placeholder="点击右侧“选择...”浏览文件夹..." readonly>
+                                <button type="button" id="btn-browse-folder" class="win98-btn">选择...</button>
+                                <button type="button" id="btn-add-folder" class="win98-btn">添加</button>
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
 
                     <div class="form-actions">
-                        <button type="button" id="btn-cancel-settings" class="btn btn-secondary">取消</button>
-                        <button type="submit" class="btn btn-primary">保存配置</button>
+                        <button type="submit" class="win98-btn default-btn">确定</button>
+                        <button type="button" id="btn-cancel-settings" class="win98-btn">取消</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Notification Toast -->
-    <div id="toast" class="toast">
-        <div class="toast-content">
-            <span id="toast-message">提示内容</span>
+    <!-- Notification Dialog -->
+    <div id="toast" class="toast-win98 window">
+        <div class="title-bar">
+            <div class="title-bar-text" id="toast-title">系统信息</div>
+        </div>
+        <div class="window-body toast-body">
+            <div class="toast-message-container">
+                <span class="info-icon">ℹ️</span>
+                <span id="toast-message">提示内容</span>
+            </div>
         </div>
     </div>
     

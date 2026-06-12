@@ -1,6 +1,7 @@
 // DOM Elements
 const btnSyncActive = document.getElementById('btn-sync-active');
 const btnSettings = document.getElementById('btn-settings');
+const menuTriggerSettings = document.getElementById('menu-trigger-settings');
 const settingsModal = document.getElementById('settings-modal');
 const btnCloseSettings = document.getElementById('btn-close-settings');
 const btnCancelSettings = document.getElementById('btn-cancel-settings');
@@ -29,16 +30,13 @@ let activeRepos = [];
 // Toast Notification Helper
 function showToast(message, type = 'info') {
     toastMessage.textContent = message;
-    toast.className = 'toast active';
-    if (type === 'error') {
-        toast.style.borderColor = 'var(--red)';
-        toast.style.boxShadow = '0 0 15px var(--red-glow)';
-    } else {
-        toast.style.borderColor = 'var(--blue)';
-        toast.style.boxShadow = '0 0 15px var(--blue-glow)';
+    toast.className = 'toast-win98 window active';
+    const toastTitle = document.getElementById('toast-title');
+    if (toastTitle) {
+        toastTitle.textContent = type === 'error' ? '错误' : '系统提示';
     }
     setTimeout(() => {
-        toast.className = 'toast';
+        toast.className = 'toast-win98 window';
     }, 3000);
 }
 
@@ -141,10 +139,8 @@ function renderRepos() {
         }
         
         const actionBtn = repo.is_git ? `
-            <button class="btn btn-secondary btn-sm btn-sync" data-path="${repo.path}" title="备份当前项目">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sync-icon" style="width:16px;height:16px;">
-                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
-                </svg>
+            <button class="btn-sync" data-path="${repo.path}" title="备份当前项目">
+                <span class="sync-icon">🔄</span>
             </button>
         ` : '-';
         
@@ -254,6 +250,11 @@ btnAddFolder.onclick = () => {
 btnSettings.onclick = () => {
     settingsModal.classList.add('active');
 };
+if (menuTriggerSettings) {
+    menuTriggerSettings.onclick = () => {
+        settingsModal.classList.add('active');
+    };
+}
 
 // Close Settings
 const closeModal = () => {
@@ -307,8 +308,8 @@ btnSyncActive.onclick = async () => {
     }
     
     btnSyncActive.disabled = true;
-    const syncIcon = btnSyncActive.querySelector('.btn-icon svg');
-    syncIcon.classList.add('spinning');
+    const syncIcon = btnSyncActive.querySelector('.sync-icon');
+    if (syncIcon) syncIcon.classList.add('spinning');
     
     showToast('正在增量更新所有已备份过的项目...');
     
@@ -340,7 +341,7 @@ btnSyncActive.onclick = async () => {
         console.error(err);
     } finally {
         btnSyncActive.disabled = false;
-        syncIcon.classList.remove('spinning');
+        if (syncIcon) syncIcon.classList.remove('spinning');
     }
 };
 

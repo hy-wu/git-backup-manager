@@ -325,6 +325,12 @@ body {
     text-align: left;
 }
 
+.repo-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
 .repo-table th {
     background-color: var(--surface-gray);
     border: none;
@@ -336,10 +342,37 @@ body {
     padding: 3px 6px;
     font-weight: normal;
     color: var(--text-color);
-    position: sticky;
-    top: 0;
     user-select: none;
     white-space: nowrap;
+}
+
+.header-sort-row th[data-sort]:hover {
+    background-color: #dfdfdf;
+}
+
+.sort-indicator {
+    display: inline-block;
+    width: 12px;
+    margin-left: 4px;
+    font-size: 0.9em;
+    color: #000080;
+    font-weight: bold;
+}
+
+.col-filter {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    border: none;
+    box-shadow: 
+        inset 1px 1px var(--border-dark), 
+        inset -1px -1px var(--border-light), 
+        inset 2px 2px var(--border-shadow), 
+        inset -2px -2px var(--border-light-gray);
+    padding: 1px 3px;
+    margin: 0;
+    outline: none;
+    color: #000;
 }
 
 .repo-table td {

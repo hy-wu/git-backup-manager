@@ -69,15 +69,47 @@
                 <div class="list-view-container">
                     <table class="repo-table">
                         <thead>
-                            <tr>
-                                <th>项目名称</th>
-                                <th>本地路径</th>
-                                <th>Git状态</th>
-                                <th>文件数</th>
-                                <th>修改状态</th>
-                                <th>上次备份时间</th>
-                                <th>备份状态</th>
+                            <tr class="header-sort-row">
+                                <th data-sort="name" style="cursor: pointer;">项目名称<span class="sort-indicator"></span></th>
+                                <th data-sort="path" style="cursor: pointer;">本地路径<span class="sort-indicator"></span></th>
+                                <th data-sort="is_git" style="cursor: pointer;">Git状态<span class="sort-indicator"></span></th>
+                                <th data-sort="file_count" style="cursor: pointer;">文件数<span class="sort-indicator"></span></th>
+                                <th data-sort="has_changes" style="cursor: pointer;">修改状态<span class="sort-indicator"></span></th>
+                                <th data-sort="last_sync_time" style="cursor: pointer;">上次备份时间<span class="sort-indicator"></span></th>
+                                <th data-sort="last_sync_status" style="cursor: pointer;">备份状态<span class="sort-indicator"></span></th>
                                 <th>操作</th>
+                            </tr>
+                            <tr class="header-filter-row">
+                                <th><input type="text" id="filter-name" class="col-filter" placeholder="筛选名称..."></th>
+                                <th><input type="text" id="filter-path" class="col-filter" placeholder="筛选路径..."></th>
+                                <th>
+                                    <select id="filter-is-git" class="col-filter">
+                                        <option value="">全部</option>
+                                        <option value="git">Git 仓库</option>
+                                        <option value="nogit">非 Git</option>
+                                    </select>
+                                </th>
+                                <th><input type="number" id="filter-file-count" class="col-filter" placeholder="最少..." min="0"></th>
+                                <th>
+                                    <select id="filter-has-changes" class="col-filter">
+                                        <option value="">全部</option>
+                                        <option value="dirty">有修改</option>
+                                        <option value="clean">已提交</option>
+                                        <option value="nogit">非 Git</option>
+                                    </select>
+                                </th>
+                                <th></th>
+                                <th>
+                                    <select id="filter-last-sync-status" class="col-filter">
+                                        <option value="">全部</option>
+                                        <option value="Success">成功</option>
+                                        <option value="Failed">失败</option>
+                                        <option value="Pending">待备份</option>
+                                    </select>
+                                </th>
+                                <th style="text-align: center;">
+                                    <button id="btn-clear-filters" class="win98-btn" style="padding: 1px 4px; font-size: inherit; width: 100%;">重置</button>
+                                </th>
                             </tr>
                         </thead>
                         <tbody id="repo-list">

@@ -23,9 +23,20 @@ const statGitRepos = document.getElementById('stat-git-repos');
 const statDirtyRepos = document.getElementById('stat-dirty-repos');
 const statBackupDestName = document.getElementById('stat-backup-dest-name');
 
+// Column Filter Elements
+const filterName = document.getElementById('filter-name');
+const filterPath = document.getElementById('filter-path');
+const filterIsGit = document.getElementById('filter-is-git');
+const filterFileCount = document.getElementById('filter-file-count');
+const filterHasChanges = document.getElementById('filter-has-changes');
+const filterLastSyncStatus = document.getElementById('filter-last-sync-status');
+const btnClearFilters = document.getElementById('btn-clear-filters');
+
 // State
 let localConfig = { backup_dest: '', monitored_folders: [] };
 let activeRepos = [];
+let currentSortCol = null;
+let currentSortOrder = null; // 'asc', 'desc', or null
 
 // Toast Notification Helper
 function showToast(message, type = 'info') {
@@ -97,11 +108,98 @@ async function fetchRepos() {
 
 // Render Repositories Table
 function renderRepos() {
+    // 1. General Search Filter
     const query = repoSearch.value.toLowerCase().trim();
-    const filtered = activeRepos.filter(r => 
-        r.name.toLowerCase().includes(query) || 
-        r.path.toLowerCase().includes(query)
-    );
+    
+    // 2. Read Column Filter Values
+    const fName = filterName.value.toLowerCase().trim();
+    const fPath = filterPath.value.toLowerCase().trim();
+    const fIsGit = filterIsGit.value;
+    const fMinFiles = parseInt(filterFileCount.value) || 0;
+    const fHasChanges = filterHasChanges.value;
+    const fStatus = filterLastSyncStatus.value;
+    
+    // 3. Apply Filters
+    let filtered = activeRepos.filter(r => {
+        // General query match
+        if (query && !r.name.toLowerCase().includes(query) && !r.path.toLowerCase().includes(query)) {
+            return false;
+        }
+        // Project name column filter
+        if (fName && !r.name.toLowerCase().includes(fName)) {
+            return false;
+        }
+        // Local path column filter
+        if (fPath && !r.path.toLowerCase().includes(fPath)) {
+            return false;
+        }
+        // Git status column filter
+        if (fIsGit) {
+            if (fIsGit === 'git' && !r.is_git) return false;
+            if (fIsGit === 'nogit' && r.is_git) return false;
+        }
+        // File count column filter (min files)
+        if (fMinFiles > 0) {
+            if (!r.is_git || r.file_count < fMinFiles) return false;
+        }
+        // Has changes column filter
+        if (fHasChanges) {
+            if (fHasChanges === 'dirty' && (!r.is_git || !r.has_changes)) return false;
+            if (fHasChanges === 'clean' && (!r.is_git || r.has_changes)) return false;
+            if (fHasChanges === 'nogit' && r.is_git) return false;
+        }
+        // Last sync status column filter
+        if (fStatus) {
+            if (fStatus === 'Success' && (!r.is_git || r.last_sync_status !== 'Success')) return false;
+            if (fStatus === 'Failed' && (!r.is_git || r.last_sync_status !== 'Failed')) return false;
+            if (fStatus === 'Pending' && (!r.is_git || (r.last_sync_status === 'Success' || r.last_sync_status === 'Failed'))) return false;
+        }
+        return true;
+    });
+    
+    // 4. Apply Sorting
+    if (currentSortCol && currentSortOrder) {
+        filtered.sort((a, b) => {
+            let valA, valB;
+            
+            switch (currentSortCol) {
+                case 'name':
+                    valA = a.name.toLowerCase();
+                    valB = b.name.toLowerCase();
+                    break;
+                case 'path':
+                    valA = a.path.toLowerCase();
+                    valB = b.path.toLowerCase();
+                    break;
+                case 'is_git':
+                    valA = a.is_git ? 1 : 0;
+                    valB = b.is_git ? 1 : 0;
+                    break;
+                case 'file_count':
+                    valA = a.is_git ? a.file_count : -1;
+                    valB = b.is_git ? b.file_count : -1;
+                    break;
+                case 'has_changes':
+                    valA = a.is_git ? (a.has_changes ? 1 : 0) : -1;
+                    valB = b.is_git ? (b.has_changes ? 1 : 0) : -1;
+                    break;
+                case 'last_sync_time':
+                    valA = a.last_sync_time === '-' ? '' : a.last_sync_time;
+                    valB = b.last_sync_time === '-' ? '' : b.last_sync_time;
+                    break;
+                case 'last_sync_status':
+                    valA = a.is_git ? (a.last_sync_status || 'Pending') : '';
+                    valB = b.is_git ? (b.last_sync_status || 'Pending') : '';
+                    break;
+                default:
+                    return 0;
+            }
+            
+            if (valA < valB) return currentSortOrder === 'asc' ? -1 : 1;
+            if (valA > valB) return currentSortOrder === 'asc' ? 1 : -1;
+            return 0;
+        });
+    }
     
     // Update Stats
     statTotalRepos.textContent = activeRepos.length;
@@ -291,6 +389,60 @@ settingsForm.onsubmit = async (e) => {
 
 // Search Filter
 repoSearch.oninput = renderRepos;
+
+// Sort Indicators Helper
+function updateSortIndicators() {
+    document.querySelectorAll('.header-sort-row th[data-sort]').forEach(th => {
+        const indicator = th.querySelector('.sort-indicator');
+        if (!indicator) return;
+        
+        if (th.dataset.sort === currentSortCol) {
+            indicator.textContent = currentSortOrder === 'asc' ? ' ▲' : (currentSortOrder === 'desc' ? ' ▼' : '');
+        } else {
+            indicator.textContent = '';
+        }
+    });
+}
+
+// Register Sort Event Listeners on headers
+document.querySelectorAll('.header-sort-row th[data-sort]').forEach(th => {
+    th.onclick = () => {
+        const col = th.dataset.sort;
+        if (currentSortCol === col) {
+            if (currentSortOrder === 'asc') {
+                currentSortOrder = 'desc';
+            } else if (currentSortOrder === 'desc') {
+                currentSortOrder = null;
+                currentSortCol = null;
+            } else {
+                currentSortOrder = 'asc';
+            }
+        } else {
+            currentSortCol = col;
+            currentSortOrder = 'asc';
+        }
+        updateSortIndicators();
+        renderRepos();
+    };
+});
+
+// Register Column Filter Event Listeners
+const colFilters = [filterName, filterPath, filterIsGit, filterFileCount, filterHasChanges, filterLastSyncStatus];
+colFilters.forEach(filter => {
+    if (filter) {
+        filter.oninput = renderRepos;
+        filter.onchange = renderRepos;
+    }
+});
+
+if (btnClearFilters) {
+    btnClearFilters.onclick = () => {
+        colFilters.forEach(filter => {
+            if (filter) filter.value = '';
+        });
+        renderRepos();
+    };
+}
 
 // Sync Active action
 btnSyncActive.onclick = async () => {

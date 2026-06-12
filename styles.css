@@ -896,3 +896,42 @@ body {
     align-items: center;
     gap: 1rem;
 }
+
+/* Select Dropdown styling - Windows 98 Edition */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    border-radius: 0;
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    padding: 3px 20px 3px 6px;
+    box-shadow: 
+        inset 1px 1px var(--border-dark), 
+        inset -1px -1px var(--border-light), 
+        inset 2px 2px var(--border-shadow), 
+        inset -2px -2px var(--border-light-gray);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='17' viewBox='0 0 16 17'><rect width='16' height='17' fill='%23c0c0c0'/><path d='M0 0h16v1H0zm0 1h1v15H0zm1 0h14v1H1zm0 1h1v13H1z' fill='%23fff'/><path d='M15 1h1v16h-1zm-14 14h14v1H1zm1-1h13v1H2z' fill='%23808080'/><path d='M14 2h1v14h-1zm-12 12h12v1H2z' fill='%230a0a0a'/><path d='M5 7h6l-3 3z' fill='%23000'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0px center;
+    outline: none;
+}
+
+/* Dark theme overrides for select */
+.theme-dark select,
+@media (prefers-color-scheme: dark) {
+    :root:not(.theme-light) select {
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='17' viewBox='0 0 16 17'><rect width='16' height='17' fill='%232d2d2d'/><path d='M0 0h16v1H0zm0 1h1v15H0zm1 0h14v1H1zm0 1h1v13H1z' fill='%234c4c4c'/><path d='M15 1h1v16h-1zm-14 14h14v1H1zm1-1h13v1H2z' fill='%231f1f1f'/><path d='M14 2h1v14h-1zm-12 12h12v1H2z' fill='%23121212'/><path d='M5 7h6l-3 3z' fill='%23f0f0f0'/></svg>");
+    }
+}
+
+/* Explicit override class for dark theme select */
+.theme-dark select {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='17' viewBox='0 0 16 17'><rect width='16' height='17' fill='%232d2d2d'/><path d='M0 0h16v1H0zm0 1h1v15H0zm1 0h14v1H1zm0 1h1v13H1z' fill='%234c4c4c'/><path d='M15 1h1v16h-1zm-14 14h14v1H1zm1-1h13v1H2z' fill='%231f1f1f'/><path d='M14 2h1v14h-1zm-12 12h12v1H2z' fill='%23121212'/><path d='M5 7h6l-3 3z' fill='%23f0f0f0'/></svg>");
+}
+
+select.col-filter {
+    padding: 1px 18px 1px 3px;
+    height: 19px;
+}

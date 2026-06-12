@@ -14,6 +14,144 @@
     --titlebar-blue: #000080;
     --titlebar-blue-gradient: #1084d0;
     
+    /* Input & Table Backgrounds */
+    --input-bg: #ffffff;
+    --input-text: #000000;
+    --table-row-hover-bg: #000080;
+    --table-row-hover-text: #ffffff;
+    --table-border: #e0e0e0;
+    
+    /* Badges (Light) */
+    --badge-git-bg: #cffccf;
+    --badge-git-text: #006000;
+    --badge-git-border: #00a000;
+    
+    --badge-nogit-bg: #fccfcf;
+    --badge-nogit-text: #600000;
+    --badge-nogit-border: #a00000;
+    
+    --badge-clean-bg: #cffccf;
+    --badge-clean-text: #006000;
+    --badge-clean-border: #00a000;
+    
+    --badge-dirty-bg: #fcfccf;
+    --badge-dirty-text: #606000;
+    --badge-dirty-border: #a0a000;
+    
+    --badge-success-bg: #cffccf;
+    --badge-success-text: #006000;
+    --badge-success-border: #00a000;
+    
+    --badge-failed-bg: #fccfcf;
+    --badge-failed-text: #600000;
+    --badge-failed-border: #a00000;
+    
+    --badge-pending-bg: #cff0fc;
+    --badge-pending-text: #004060;
+    --badge-pending-border: #0080a0;
+}
+
+/* Dark theme overrides (Fallback to media query if manual theme is not set to light) */
+.theme-dark,
+@media (prefers-color-scheme: dark) {
+    :root:not(.theme-light) {
+        --surface-gray: #2d2d2d;
+        --border-light: #4c4c4c;
+        --border-light-gray: #3a3a3a;
+        --border-dark: #1f1f1f;
+        --border-shadow: #121212;
+        
+        --text-color: #f0f0f0;
+        --text-muted: #888888;
+        
+        --titlebar-blue: #1c2e5a;
+        --titlebar-blue-gradient: #2e4a8c;
+        
+        --input-bg: #1e1e1e;
+        --input-text: #f0f0f0;
+        --table-row-hover-bg: #223f6d;
+        --table-row-hover-text: #ffffff;
+        --table-border: #3c3c3c;
+        
+        /* Badges (Dark) */
+        --badge-git-bg: #1a4d1a;
+        --badge-git-text: #8cfc8c;
+        --badge-git-border: #148014;
+        
+        --badge-nogit-bg: #5c1a1a;
+        --badge-nogit-text: #fc8c8c;
+        --badge-nogit-border: #801414;
+        
+        --badge-clean-bg: #1a4d1a;
+        --badge-clean-text: #8cfc8c;
+        --badge-clean-border: #148014;
+        
+        --badge-dirty-bg: #4d4d1a;
+        --badge-dirty-text: #fcfc8c;
+        --badge-dirty-border: #808014;
+        
+        --badge-success-bg: #1a4d1a;
+        --badge-success-text: #8cfc8c;
+        --badge-success-border: #148014;
+        
+        --badge-failed-bg: #5c1a1a;
+        --badge-failed-text: #fc8c8c;
+        --badge-failed-border: #801414;
+        
+        --badge-pending-bg: #1a3d54;
+        --badge-pending-text: #8cd2fc;
+        --badge-pending-border: #146880;
+    }
+}
+
+/* Explicit class override for dark theme */
+.theme-dark {
+    --surface-gray: #2d2d2d;
+    --border-light: #4c4c4c;
+    --border-light-gray: #3a3a3a;
+    --border-dark: #1f1f1f;
+    --border-shadow: #121212;
+    
+    --text-color: #f0f0f0;
+    --text-muted: #888888;
+    
+    --titlebar-blue: #1c2e5a;
+    --titlebar-blue-gradient: #2e4a8c;
+    
+    --input-bg: #1e1e1e;
+    --input-text: #f0f0f0;
+    --table-row-hover-bg: #223f6d;
+    --table-row-hover-text: #ffffff;
+    --table-border: #3c3c3c;
+    
+    /* Badges (Dark) */
+    --badge-git-bg: #1a4d1a;
+    --badge-git-text: #8cfc8c;
+    --badge-git-border: #148014;
+    
+    --badge-nogit-bg: #5c1a1a;
+    --badge-nogit-text: #fc8c8c;
+    --badge-nogit-border: #801414;
+    
+    --badge-clean-bg: #1a4d1a;
+    --badge-clean-text: #8cfc8c;
+    --badge-clean-border: #148014;
+    
+    --badge-dirty-bg: #4d4d1a;
+    --badge-dirty-text: #fcfc8c;
+    --badge-dirty-border: #808014;
+    
+    --badge-success-bg: #1a4d1a;
+    --badge-success-text: #8cfc8c;
+    --badge-success-border: #148014;
+    
+    --badge-failed-bg: #5c1a1a;
+    --badge-failed-text: #fc8c8c;
+    --badge-failed-border: #801414;
+    
+    --badge-pending-bg: #1a3d54;
+    --badge-pending-text: #8cd2fc;
+    --badge-pending-border: #146880;
 }
 
 * {
@@ -308,7 +446,7 @@ body {
 
 /* List View & Tables (Removed redundant outer flat border) */
 .list-view-container {
-    background-color: #ffffff;
+    background-color: var(--input-bg);
     box-shadow: 
         inset 1px 1px var(--border-dark), 
         inset -1px -1px var(--border-light), 
@@ -366,7 +504,7 @@ body {
 .col-filter {
     width: 100%;
     box-sizing: border-box;
-    background-color: #ffffff;
+    background-color: var(--input-bg);
     border: none;
     box-shadow: 
         inset 1px 1px var(--border-dark), 
@@ -376,25 +514,25 @@ body {
     padding: 1px 3px;
     margin: 0;
     outline: none;
-    color: #000;
+    color: var(--input-text);
 }
 
 .repo-table td {
     padding: 4px 6px;
-    border-bottom: 1px solid #e0e0e0;
-    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid var(--table-border);
+    border-right: 1px solid var(--table-border);
     color: var(--text-color);
     white-space: nowrap;
     vertical-align: middle;
 }
 
 .repo-table tbody tr:hover {
-    background-color: #000080;
-    color: #ffffff;
+    background-color: var(--table-row-hover-bg);
+    color: var(--table-row-hover-text);
 }
 
 .repo-table tbody tr:hover td {
-    color: #ffffff;
+    color: var(--table-row-hover-text);
 }
 
 .repo-table td[title] {
@@ -413,19 +551,19 @@ body {
     white-space: nowrap;
 }
 
-.badge-git { background-color: #cffccf; color: #006000; border-color: #00a000; }
-.badge-nogit { background-color: #fccfcf; color: #600000; border-color: #a00000; }
-.badge-clean { background-color: #cffccf; color: #006000; border-color: #00a000; }
-.badge-dirty { background-color: #fcfccf; color: #606000; border-color: #a0a000; }
+.badge-git { background-color: var(--badge-git-bg); color: var(--badge-git-text); border-color: var(--badge-git-border); }
+.badge-nogit { background-color: var(--badge-nogit-bg); color: var(--badge-nogit-text); border-color: var(--badge-nogit-border); }
+.badge-clean { background-color: var(--badge-clean-bg); color: var(--badge-clean-text); border-color: var(--badge-clean-border); }
+.badge-dirty { background-color: var(--badge-dirty-bg); color: var(--badge-dirty-text); border-color: var(--badge-dirty-border); }
 
-.badge-success { background-color: #cffccf; color: #006000; border-color: #00a000; }
-.badge-failed { background-color: #fccfcf; color: #600000; border-color: #a00000; }
-.badge-pending { background-color: #cff0fc; color: #004060; border-color: #0080a0; }
+.badge-success { background-color: var(--badge-success-bg); color: var(--badge-success-text); border-color: var(--badge-success-border); }
+.badge-failed { background-color: var(--badge-failed-bg); color: var(--badge-failed-text); border-color: var(--badge-failed-border); }
+.badge-pending { background-color: var(--badge-pending-bg); color: var(--badge-pending-text); border-color: var(--badge-pending-border); }
 
 .repo-table tbody tr:hover .badge {
-    border-color: #ffffff;
+    border-color: var(--table-row-hover-text);
     background-color: transparent;
-    color: #ffffff;
+    color: var(--table-row-hover-text);
 }
 
 /* Modal Overlay & Dialogs */
@@ -485,7 +623,8 @@ body {
 
 .input-row input, .add-folder-row input {
     flex-grow: 1;
-    background-color: #ffffff;
+    background-color: var(--input-bg);
+    color: var(--input-text);
     border: none;
     box-shadow: 
         inset 1px 1px var(--border-dark), 
@@ -502,7 +641,7 @@ body {
 
 /* List box inside dialog */
 .folder-list-box {
-    background-color: #ffffff;
+    background-color: var(--input-bg);
     box-shadow: 
         inset 1px 1px var(--border-dark), 
         inset -1px -1px var(--border-light), 

@@ -1,6 +1,8 @@
 // DOM Elements
 const btnSyncActive = document.getElementById('btn-sync-active');
 const btnSettings = document.getElementById('btn-settings');
+const btnThemeToggle = document.getElementById('btn-theme-toggle');
+const themeToggleText = document.getElementById('theme-toggle-text');
 const menuTriggerSettings = document.getElementById('menu-trigger-settings');
 const settingsModal = document.getElementById('settings-modal');
 const btnCloseSettings = document.getElementById('btn-close-settings');
@@ -499,8 +501,39 @@ btnSyncActive.onclick = async () => {
     }
 };
 
+// Theme management
+let currentTheme = localStorage.getItem('theme') || 'auto';
+
+function applyTheme(theme) {
+    if (theme === 'dark') {
+        document.documentElement.className = 'theme-dark';
+        if (themeToggleText) themeToggleText.textContent = '🌙 主题: 深色';
+    } else if (theme === 'light') {
+        document.documentElement.className = 'theme-light';
+        if (themeToggleText) themeToggleText.textContent = '☀️ 主题: 浅色';
+    } else {
+        document.documentElement.className = '';
+        if (themeToggleText) themeToggleText.textContent = '🌓 主题: 自动';
+    }
+}
+
+if (btnThemeToggle) {
+    btnThemeToggle.onclick = () => {
+        if (currentTheme === 'auto') {
+            currentTheme = 'light';
+        } else if (currentTheme === 'light') {
+            currentTheme = 'dark';
+        } else {
+            currentTheme = 'auto';
+        }
+        localStorage.setItem('theme', currentTheme);
+        applyTheme(currentTheme);
+    };
+}
+
 // Initial Load
 (async function init() {
+    applyTheme(currentTheme);
     await fetchConfig();
     // If not configured, pop up the settings modal automatically
     if (!localConfig.backup_dest || localConfig.monitored_folders.length === 0) {

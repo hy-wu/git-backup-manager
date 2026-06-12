@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>代码备份管家 v1.0.0 - Windows 98 Edition</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || 'auto';
+            if (theme === 'dark') {
+                document.documentElement.className = 'theme-dark';
+            } else if (theme === 'light') {
+                document.documentElement.className = 'theme-light';
+            } else {
+                document.documentElement.className = '';
+            }
+        })();
+    </script>
 </head>
 <body>
     <div class="app-container">
@@ -26,6 +38,9 @@
                 </button>
                 <button id="btn-settings" class="win98-btn">
                     <span class="btn-text">⚙️ 备份同步配置...</span>
+                </button>
+                <button id="btn-theme-toggle" class="win98-btn" style="margin-left: auto;">
+                    <span class="btn-text" id="theme-toggle-text">🌓 主题: 自动</span>
                 </button>
             </div>
 

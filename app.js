@@ -396,10 +396,12 @@ function updateSortIndicators() {
         const indicator = th.querySelector('.sort-indicator');
         if (!indicator) return;
         
-        if (th.dataset.sort === currentSortCol) {
-            indicator.textContent = currentSortOrder === 'asc' ? ' ▲' : (currentSortOrder === 'desc' ? ' ▼' : '');
+        if (th.dataset.sort === currentSortCol && currentSortOrder) {
+            indicator.textContent = currentSortOrder === 'asc' ? ' ▲' : ' ▼';
+            indicator.classList.add('active');
         } else {
-            indicator.textContent = '';
+            indicator.textContent = ' ▲';
+            indicator.classList.remove('active');
         }
     });
 }

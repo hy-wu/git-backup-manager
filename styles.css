@@ -355,8 +355,12 @@ body {
     width: 12px;
     margin-left: 4px;
     font-size: 0.9em;
-    color: #000080;
+    color: var(--text-muted); /* Gray by default */
     font-weight: bold;
+}
+
+.sort-indicator.active {
+    color: #000080; /* Dark blue when active */
 }
 
 .col-filter {

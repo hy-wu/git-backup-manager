@@ -10,13 +10,6 @@
     <div class="app-container">
         <!-- Main Workspace Window -->
         <div class="window main-window">
-            <div class="title-bar">
-                <div class="title-bar-text">代码备份管家 (Git Flow Backup Manager)</div>
-                <div class="title-bar-controls">
-                    <button aria-label="Help" tabindex="-1"></button>
-                    <button aria-label="Close" tabindex="-1" onclick="window.close()"></button>
-                </div>
-            </div>
             
             <!-- Menu Bar -->
             <div class="menu-bar">
@@ -70,13 +63,13 @@
                     <table class="repo-table">
                         <thead>
                             <tr class="header-sort-row">
-                                <th data-sort="name" style="cursor: pointer;">项目名称<span class="sort-indicator"></span></th>
-                                <th data-sort="path" style="cursor: pointer;">本地路径<span class="sort-indicator"></span></th>
-                                <th data-sort="is_git" style="cursor: pointer;">Git状态<span class="sort-indicator"></span></th>
-                                <th data-sort="file_count" style="cursor: pointer;">文件数<span class="sort-indicator"></span></th>
-                                <th data-sort="has_changes" style="cursor: pointer;">修改状态<span class="sort-indicator"></span></th>
-                                <th data-sort="last_sync_time" style="cursor: pointer;">上次备份时间<span class="sort-indicator"></span></th>
-                                <th data-sort="last_sync_status" style="cursor: pointer;">备份状态<span class="sort-indicator"></span></th>
+                                <th data-sort="name" style="cursor: pointer;">项目名称<span class="sort-indicator"> ▲</span></th>
+                                <th data-sort="path" style="cursor: pointer;">本地路径<span class="sort-indicator"> ▲</span></th>
+                                <th data-sort="is_git" style="cursor: pointer;">Git状态<span class="sort-indicator"> ▲</span></th>
+                                <th data-sort="file_count" style="cursor: pointer;">文件数<span class="sort-indicator"> ▲</span></th>
+                                <th data-sort="has_changes" style="cursor: pointer;">修改状态<span class="sort-indicator"> ▲</span></th>
+                                <th data-sort="last_sync_time" style="cursor: pointer;">上次备份时间<span class="sort-indicator"> ▲</span></th>
+                                <th data-sort="last_sync_status" style="cursor: pointer;">备份状态<span class="sort-indicator"> ▲</span></th>
                                 <th>操作</th>
                             </tr>
                             <tr class="header-filter-row">

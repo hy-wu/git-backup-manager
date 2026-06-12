@@ -21,34 +21,23 @@
             }
             
             // Apply saved font and size settings immediately to prevent flash
-            const zhFont = localStorage.getItem('zh-font') || 'inherit';
-            const enFont = localStorage.getItem('en-font') || 'inherit';
+            const font = localStorage.getItem('font') || localStorage.getItem('zh-font') || localStorage.getItem('en-font') || 'inherit';
             const fontSize = localStorage.getItem('font-size') || 'inherit';
             let fontFamily = '';
             
-            const fontMapZh = {
+            const fontMap = {
                 'Microsoft YaHei': ['"Microsoft YaHei"', '"微软雅黑"'],
                 'SimSun': ['"SimSun"', '"宋体"', 'serif'],
-                'SimHei': ['"SimHei"', '"黑体"']
-            };
-            const fontMapEn = {
+                'SimHei': ['"SimHei"', '"黑体"'],
                 'Tahoma': ['"Tahoma"', 'Geneva'],
                 'Arial': ['"Arial"', 'Helvetica'],
                 'Times New Roman': ['"Times New Roman"', 'Times', 'serif'],
                 'Courier New': ['"Courier New"', 'Courier', 'monospace']
             };
             
-            let fontList = [];
-            if (enFont && fontMapEn[enFont]) {
-                fontList = fontList.concat(fontMapEn[enFont]);
-            }
-            if (zhFont && fontMapZh[zhFont]) {
-                fontList = fontList.concat(fontMapZh[zhFont]);
-            }
-            if (fontList.length > 0) {
-                fontList.push('sans-serif');
-                fontList = fontList.filter((item, idx) => fontList.indexOf(item) === idx);
-                fontFamily = fontList.join(', ');
+            if (font !== 'inherit' && fontMap[font]) {
+                const fontList = fontMap[font].concat(['sans-serif']);
+                fontFamily = fontList.filter((item, idx) => fontList.indexOf(item) === idx).join(', ');
             }
             
             if (fontFamily) document.documentElement.style.fontFamily = fontFamily;
@@ -78,22 +67,16 @@
                             </div>
                         </div>
                         <div class="dropdown-submenu">
-                            <span class="dropdown-item-label">🔤 中文字体</span>
+                            <span class="dropdown-item-label">🔤 字体设定</span>
                             <div class="submenu-content">
-                                <div class="dropdown-item font-zh-opt" data-font="Microsoft YaHei" style="font-family: 'Microsoft YaHei', '微软雅黑', sans-serif;">微软雅黑</div>
-                                <div class="dropdown-item font-zh-opt" data-font="SimSun" style="font-family: 'SimSun', '宋体', serif;">宋体 (SimSun)</div>
-                                <div class="dropdown-item font-zh-opt" data-font="SimHei" style="font-family: 'SimHei', '黑体', sans-serif;">黑体 (SimHei)</div>
-                                <div class="dropdown-item font-zh-opt" data-font="inherit">系统默认</div>
-                            </div>
-                        </div>
-                        <div class="dropdown-submenu">
-                            <span class="dropdown-item-label">🔤 英文字体</span>
-                            <div class="submenu-content">
-                                <div class="dropdown-item font-en-opt" data-font="Tahoma" style="font-family: 'Tahoma', Geneva, sans-serif;">Tahoma</div>
-                                <div class="dropdown-item font-en-opt" data-font="Arial" style="font-family: 'Arial', Helvetica, sans-serif;">Arial</div>
-                                <div class="dropdown-item font-en-opt" data-font="Times New Roman" style="font-family: 'Times New Roman', Times, serif;">Times New Roman</div>
-                                <div class="dropdown-item font-en-opt" data-font="Courier New" style="font-family: 'Courier New', Courier, monospace;">Courier New</div>
-                                <div class="dropdown-item font-en-opt" data-font="inherit">系统默认</div>
+                                <div class="dropdown-item font-opt" data-font="Microsoft YaHei" style="font-family: 'Microsoft YaHei', '微软雅黑', sans-serif;">微软雅黑</div>
+                                <div class="dropdown-item font-opt" data-font="SimSun" style="font-family: 'SimSun', '宋体', serif;">宋体 (SimSun)</div>
+                                <div class="dropdown-item font-opt" data-font="SimHei" style="font-family: 'SimHei', '黑体', sans-serif;">黑体 (SimHei)</div>
+                                <div class="dropdown-item font-opt" data-font="Tahoma" style="font-family: 'Tahoma', Geneva, sans-serif;">Tahoma</div>
+                                <div class="dropdown-item font-opt" data-font="Arial" style="font-family: 'Arial', Helvetica, sans-serif;">Arial</div>
+                                <div class="dropdown-item font-opt" data-font="Times New Roman" style="font-family: 'Times New Roman', Times, serif;">Times New Roman</div>
+                                <div class="dropdown-item font-opt" data-font="Courier New" style="font-family: 'Courier New', Courier, monospace;">Courier New</div>
+                                <div class="dropdown-item font-opt" data-font="inherit">系统默认</div>
                             </div>
                         </div>
                         <div class="dropdown-submenu">
@@ -106,6 +89,8 @@
                                 <div class="dropdown-item font-size-opt" data-size="inherit">系统默认</div>
                             </div>
                         </div>
+                        <div class="dropdown-separator"></div>
+                        <div class="dropdown-item" id="theme-opt-reset">🔄 恢复默认设置</div>
                     </div>
                 </div>
                 <div class="menu-item">帮助(H)</div>

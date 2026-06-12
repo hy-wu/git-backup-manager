@@ -501,8 +501,7 @@ btnSyncActive.onclick = async () => {
 
 // Theme, Font, and Size Settings management
 let currentTheme = localStorage.getItem('theme') || 'dark'; // Default theme is dark!
-let currentZhFont = localStorage.getItem('zh-font') || 'inherit';
-let currentEnFont = localStorage.getItem('en-font') || 'inherit';
+let currentFont = localStorage.getItem('font') || localStorage.getItem('zh-font') || localStorage.getItem('en-font') || 'inherit';
 let currentFontSize = localStorage.getItem('font-size') || 'inherit';
 
 function applyTheme(theme) {
@@ -530,29 +529,19 @@ function applyTheme(theme) {
 function applyFontsAndSize() {
     let fontFamily = '';
     
-    const fontMapZh = {
+    const fontMap = {
         'Microsoft YaHei': ['"Microsoft YaHei"', '"微软雅黑"'],
         'SimSun': ['"SimSun"', '"宋体"', 'serif'],
-        'SimHei': ['"SimHei"', '"黑体"']
-    };
-    const fontMapEn = {
+        'SimHei': ['"SimHei"', '"黑体"'],
         'Tahoma': ['"Tahoma"', 'Geneva'],
         'Arial': ['"Arial"', 'Helvetica'],
         'Times New Roman': ['"Times New Roman"', 'Times', 'serif'],
         'Courier New': ['"Courier New"', 'Courier', 'monospace']
     };
     
-    let fontList = [];
-    if (currentEnFont && fontMapEn[currentEnFont]) {
-        fontList = fontList.concat(fontMapEn[currentEnFont]);
-    }
-    if (currentZhFont && fontMapZh[currentZhFont]) {
-        fontList = fontList.concat(fontMapZh[currentZhFont]);
-    }
-    if (fontList.length > 0) {
-        fontList.push('sans-serif');
-        fontList = fontList.filter((item, idx) => fontList.indexOf(item) === idx);
-        fontFamily = fontList.join(', ');
+    if (currentFont !== 'inherit' && fontMap[currentFont]) {
+        const fontList = fontMap[currentFont].concat(['sans-serif']);
+        fontFamily = fontList.filter((item, idx) => fontList.indexOf(item) === idx).join(', ');
     }
     
     document.documentElement.style.fontFamily = fontFamily;
@@ -563,14 +552,9 @@ function applyFontsAndSize() {
         document.body.style.fontSize = currentFontSize === 'inherit' ? '' : currentFontSize;
     }
     
-    // Update Chinese font checkmarks
-    document.querySelectorAll('.font-zh-opt').forEach(opt => {
-        opt.classList.toggle('selected', opt.dataset.font === currentZhFont);
-    });
-    
-    // Update English font checkmarks
-    document.querySelectorAll('.font-en-opt').forEach(opt => {
-        opt.classList.toggle('selected', opt.dataset.font === currentEnFont);
+    // Update font checkmarks
+    document.querySelectorAll('.font-opt').forEach(opt => {
+        opt.classList.toggle('selected', opt.dataset.font === currentFont);
     });
     
     // Update Font size checkmarks
@@ -589,20 +573,11 @@ document.querySelectorAll('#theme-opt-dark, #theme-opt-light, #theme-opt-auto').
     };
 });
 
-document.querySelectorAll('.font-zh-opt').forEach(opt => {
+document.querySelectorAll('.font-opt').forEach(opt => {
     opt.onclick = (e) => {
         e.stopPropagation();
-        currentZhFont = opt.dataset.font;
-        localStorage.setItem('zh-font', currentZhFont);
-        applyFontsAndSize();
-    };
-});
-
-document.querySelectorAll('.font-en-opt').forEach(opt => {
-    opt.onclick = (e) => {
-        e.stopPropagation();
-        currentEnFont = opt.dataset.font;
-        localStorage.setItem('en-font', currentEnFont);
+        currentFont = opt.dataset.font;
+        localStorage.setItem('font', currentFont);
         applyFontsAndSize();
     };
 });
@@ -615,6 +590,31 @@ document.querySelectorAll('.font-size-opt').forEach(opt => {
         applyFontsAndSize();
     };
 });
+
+const resetOpt = document.getElementById('theme-opt-reset');
+if (resetOpt) {
+    resetOpt.onclick = (e) => {
+        e.stopPropagation();
+        
+        // Remove from localStorage
+        localStorage.removeItem('theme');
+        localStorage.removeItem('font');
+        localStorage.removeItem('zh-font');
+        localStorage.removeItem('en-font');
+        localStorage.removeItem('font-size');
+        
+        // Reset local variables to defaults
+        currentTheme = 'dark'; // Default is dark
+        currentFont = 'inherit';
+        currentFontSize = 'inherit';
+        
+        // Apply changes
+        applyTheme(currentTheme);
+        applyFontsAndSize();
+        
+        showToast('已恢复默认主题和字体设置！');
+    };
+}
 
 // Initial Load
 (async function init() {

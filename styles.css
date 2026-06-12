@@ -432,6 +432,13 @@ body {
     display: block;
 }
 
+.dropdown-separator {
+    height: 1px;
+    border-top: 1px solid var(--border-dark);
+    border-bottom: 1px solid var(--border-light);
+    margin: 4px 1px;
+}
+
 .dropdown-item-label, .dropdown-item {
     padding: 4px 24px 4px 24px; /* Space left for checkmark, space right for submenu arrow */
     white-space: nowrap;

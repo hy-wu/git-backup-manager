@@ -8,35 +8,6 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- System Stats Monitor Window -->
-        <div class="window status-window">
-            <div class="title-bar">
-                <div class="title-bar-text">系统监视器 - 备份资源统计</div>
-                <div class="title-bar-controls">
-                    <button aria-label="Minimize" tabindex="-1"></button>
-                    <button aria-label="Maximize" tabindex="-1"></button>
-                </div>
-            </div>
-            <div class="window-body status-container">
-                <div class="status-panel">
-                    <span class="status-label">检测文件夹数:</span>
-                    <span id="stat-total-repos" class="status-value">0</span>
-                </div>
-                <div class="status-panel">
-                    <span class="status-label">Git仓库数:</span>
-                    <span id="stat-git-repos" class="status-value">0</span>
-                </div>
-                <div class="status-panel">
-                    <span class="status-label">待备份修改:</span>
-                    <span id="stat-dirty-repos" class="status-value">0</span>
-                </div>
-                <div class="status-panel">
-                    <span class="status-label">备份云盘目的地:</span>
-                    <span id="stat-backup-dest-name" class="status-value truncate" title="未设置">未设置</span>
-                </div>
-            </div>
-        </div>
-
         <!-- Main Workspace Window -->
         <div class="window main-window">
             <div class="title-bar">
@@ -63,10 +34,33 @@
                 <button id="btn-settings" class="win98-btn">
                     <span class="btn-text">⚙️ 备份同步配置...</span>
                 </button>
-                <div class="toolbar-divider"></div>
+            </div>
+
+            <!-- Merged Stats Bar (Inline status panels) -->
+            <div class="stats-bar-inline">
+                <div class="status-panel">
+                    <span class="status-label">检测文件夹数:</span>
+                    <span id="stat-total-repos" class="status-value">0</span>
+                </div>
+                <div class="status-panel">
+                    <span class="status-label">Git仓库数:</span>
+                    <span id="stat-git-repos" class="status-value">0</span>
+                </div>
+                <div class="status-panel">
+                    <span class="status-label">待备份修改:</span>
+                    <span id="stat-dirty-repos" class="status-value">0</span>
+                </div>
+                <div class="status-panel">
+                    <span class="status-label">备份云盘目的地:</span>
+                    <span id="stat-backup-dest-name" class="status-value truncate" title="未设置">未设置</span>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
                 <div class="search-box">
-                    <label for="repo-search" style="font-size: 11px; margin-right: 4px;">过滤项目:</label>
-                    <input type="text" id="repo-search" placeholder="输入关键字筛选...">
+                    <label for="repo-search" style="font-size: 11px; margin-right: 6px;">过滤项目:</label>
+                    <input type="text" id="repo-search" placeholder="输入关键字筛选项目...">
                 </div>
             </div>
 

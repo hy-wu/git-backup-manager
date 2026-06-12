@@ -24,25 +24,32 @@
 }
 
 body {
-    background-color: var(--bg-win98);
+    background-color: var(--surface-gray);
     color: var(--text-color);
     font-family: var(--font-win98);
     font-size: 12px;
-    padding: 1rem;
-    overflow-x: hidden;
-}
-
-/* App Layout Grid (Optimized for Widescreen) */
-.app-container {
-    width: 96%;
-    max-width: 1600px;
-    margin: 0 auto;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 12px;
 }
 
-/* Windows 98 Window Wrapper (Removed redundant outer flat borders) */
+/* App Layout Grid (Filling entire window) */
+.app-container {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+}
+
+/* Windows 98 Window Wrapper */
 .window {
     background-color: var(--surface-gray);
     padding: 3px;
@@ -53,6 +60,17 @@ body {
         inset -2px -2px var(--border-dark);
     display: flex;
     flex-direction: column;
+}
+
+/* Main Workspace Window (Borderless, fills window) */
+.main-window {
+    box-shadow: none !important;
+    padding: 0 !important;
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .title-bar {
@@ -141,12 +159,15 @@ body {
     gap: 8px;
 }
 
-/* Status Monitor Window */
-.status-container {
+/* Inline stats bar and filter bar */
+.stats-bar-inline {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-    padding: 6px;
+    gap: 4px;
+    padding: 4px 6px;
+    background-color: var(--surface-gray);
+    border-bottom: 2px solid var(--border-light);
+    box-shadow: 0 1px var(--border-dark);
 }
 
 .status-panel {
@@ -173,6 +194,42 @@ body {
     color: #000080;
     font-family: monospace;
     font-size: 12px;
+}
+
+.filter-bar {
+    display: flex;
+    align-items: center;
+    padding: 4px 6px;
+    background-color: var(--surface-gray);
+    border-bottom: 2px solid var(--border-light);
+    box-shadow: 0 1px var(--border-dark);
+}
+
+.filter-bar .search-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.filter-bar .search-box label {
+    font-size: 11px;
+    margin-right: 6px;
+}
+
+.filter-bar .search-box input {
+    flex-grow: 1;
+    background-color: #ffffff;
+    border: none;
+    box-shadow: 
+        inset 1px 1px var(--border-dark), 
+        inset -1px -1px var(--border-light), 
+        inset 2px 2px var(--border-shadow), 
+        inset -2px -2px var(--border-light-gray);
+    padding: 3px 6px;
+    font-family: var(--font-win98);
+    font-size: 11px;
+    outline: none;
+    color: #000;
 }
 
 /* Menu Bar */
@@ -204,36 +261,6 @@ body {
     background-color: var(--surface-gray);
     border-bottom: 2px solid var(--border-light);
     box-shadow: 0 1px var(--border-dark);
-}
-
-.toolbar-divider {
-    width: 2px;
-    height: 18px;
-    background-color: var(--border-dark);
-    border-right: 1px solid var(--border-light);
-    margin: 0 4px;
-}
-
-.search-box {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-}
-
-.search-box input {
-    background-color: #ffffff;
-    border: none;
-    box-shadow: 
-        inset 1px 1px var(--border-dark), 
-        inset -1px -1px var(--border-light), 
-        inset 2px 2px var(--border-shadow), 
-        inset -2px -2px var(--border-light-gray);
-    padding: 2px 4px;
-    font-family: var(--font-win98);
-    font-size: 11px;
-    outline: none;
-    width: 180px;
-    color: #000;
 }
 
 /* Win98 Button styling (Removed redundant outer flat border) */
@@ -276,6 +303,17 @@ body {
     cursor: not-allowed;
 }
 
+/* Main workspace body */
+.main-body {
+    padding: 6px !important;
+    gap: 0 !important;
+    flex-grow: 1;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 /* List View & Tables (Removed redundant outer flat border) */
 .list-view-container {
     background-color: #ffffff;
@@ -285,7 +323,8 @@ body {
         inset 2px 2px var(--border-shadow), 
         inset -2px -2px var(--border-light-gray);
     overflow: auto;
-    max-height: 580px; /* Increased table height for widescreen view */
+    flex-grow: 1;
+    height: 100%;
 }
 
 .repo-table {

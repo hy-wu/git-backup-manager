@@ -32,35 +32,17 @@ body {
     overflow-x: hidden;
 }
 
-/* App Layout Grid */
+/* App Layout Grid (Optimized for Widescreen) */
 .app-container {
-    max-width: 1200px;
+    width: 96%;
+    max-width: 1600px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-/* 3D Borders helpers */
-.outset-border {
-    box-shadow: 
-        inset 1px 1px var(--border-light), 
-        inset -1px -1px var(--border-shadow), 
-        inset 2px 2px var(--border-light-gray), 
-        inset -2px -2px var(--border-dark);
-    border: 1px solid var(--surface-gray);
-}
-
-.inset-border {
-    box-shadow: 
-        inset 1px 1px var(--border-dark), 
-        inset -1px -1px var(--border-light), 
-        inset 2px 2px var(--border-shadow), 
-        inset -2px -2px var(--border-light-gray);
-    border: 1px solid var(--surface-gray);
-}
-
-/* Windows 98 Window Wrapper */
+/* Windows 98 Window Wrapper (Removed redundant outer flat borders) */
 .window {
     background-color: var(--surface-gray);
     padding: 3px;
@@ -69,7 +51,6 @@ body {
         inset -1px -1px var(--border-shadow), 
         inset 2px 2px var(--border-light-gray), 
         inset -2px -2px var(--border-dark);
-    border: 1px solid var(--surface-gray);
     display: flex;
     flex-direction: column;
 }
@@ -104,7 +85,7 @@ body {
     padding: 0;
     margin-left: 2px;
     background-color: var(--surface-gray);
-    border: 1px solid var(--surface-gray);
+    border: none;
     box-shadow: 
         inset 1px 1px var(--border-light), 
         inset -1px -1px var(--border-shadow), 
@@ -180,7 +161,6 @@ body {
         inset -1px -1px var(--border-light), 
         inset 2px 2px var(--border-shadow), 
         inset -2px -2px var(--border-light-gray);
-    border: 1px solid var(--surface-gray);
 }
 
 .status-label {
@@ -242,7 +222,7 @@ body {
 
 .search-box input {
     background-color: #ffffff;
-    border: 1px solid var(--surface-gray);
+    border: none;
     box-shadow: 
         inset 1px 1px var(--border-dark), 
         inset -1px -1px var(--border-light), 
@@ -252,18 +232,18 @@ body {
     font-family: var(--font-win98);
     font-size: 11px;
     outline: none;
-    width: 160px;
+    width: 180px;
     color: #000;
 }
 
-/* Win98 Button styling */
+/* Win98 Button styling (Removed redundant outer flat border) */
 .win98-btn, .btn-sync {
     background-color: var(--surface-gray);
     color: var(--text-color);
     font-family: var(--font-win98);
     font-size: 11px;
     padding: 4px 8px;
-    border: 1px solid var(--surface-gray);
+    border: none;
     box-shadow: 
         inset 1px 1px var(--border-light), 
         inset -1px -1px var(--border-shadow), 
@@ -296,7 +276,7 @@ body {
     cursor: not-allowed;
 }
 
-/* List View & Tables */
+/* List View & Tables (Removed redundant outer flat border) */
 .list-view-container {
     background-color: #ffffff;
     box-shadow: 
@@ -304,9 +284,8 @@ body {
         inset -1px -1px var(--border-light), 
         inset 2px 2px var(--border-shadow), 
         inset -2px -2px var(--border-light-gray);
-    border: 1px solid var(--surface-gray);
     overflow: auto;
-    max-height: 480px;
+    max-height: 580px; /* Increased table height for widescreen view */
 }
 
 .repo-table {
@@ -317,7 +296,7 @@ body {
 
 .repo-table th {
     background-color: var(--surface-gray);
-    border: 1px solid var(--surface-gray);
+    border: none;
     box-shadow: 
         inset 1px 1px var(--border-light), 
         inset -1px -1px var(--border-shadow), 
@@ -334,7 +313,7 @@ body {
 }
 
 .repo-table td {
-    padding: 3px 6px;
+    padding: 4px 6px;
     font-size: 11px;
     border-bottom: 1px solid #e0e0e0;
     border-right: 1px solid #e0e0e0;
@@ -444,7 +423,7 @@ body {
 .input-row input, .add-folder-row input {
     flex-grow: 1;
     background-color: #ffffff;
-    border: 1px solid var(--surface-gray);
+    border: none;
     box-shadow: 
         inset 1px 1px var(--border-dark), 
         inset -1px -1px var(--border-light), 
@@ -469,7 +448,6 @@ body {
         inset -1px -1px var(--border-light), 
         inset 2px 2px var(--border-shadow), 
         inset -2px -2px var(--border-light-gray);
-    border: 1px solid var(--surface-gray);
     height: 100px;
     overflow-y: auto;
     margin-bottom: 6px;
@@ -552,7 +530,7 @@ body {
     font-size: 11px;
 }
 
-/* Spin animation for sync button (rotating emoji or symbol) */
+/* Spin animation */
 @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
@@ -598,4 +576,11 @@ body {
         inset -1px -1px var(--border-light), 
         inset 2px 2px var(--border-dark), 
         inset -2px -2px var(--border-light-gray);
+}
+
+/* Header actions layout */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }

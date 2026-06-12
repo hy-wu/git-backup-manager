@@ -1,8 +1,6 @@
 // DOM Elements
 const btnSyncActive = document.getElementById('btn-sync-active');
 const btnSettings = document.getElementById('btn-settings');
-const btnThemeToggle = document.getElementById('btn-theme-toggle');
-const themeToggleText = document.getElementById('theme-toggle-text');
 const menuTriggerSettings = document.getElementById('menu-trigger-settings');
 const settingsModal = document.getElementById('settings-modal');
 const btnCloseSettings = document.getElementById('btn-close-settings');
@@ -501,39 +499,104 @@ btnSyncActive.onclick = async () => {
     }
 };
 
-// Theme management
-let currentTheme = localStorage.getItem('theme') || 'auto';
+// Theme, Font, and Size Settings management
+let currentTheme = localStorage.getItem('theme') || 'dark'; // Default theme is dark!
+let currentZhFont = localStorage.getItem('zh-font') || 'inherit';
+let currentEnFont = localStorage.getItem('en-font') || 'inherit';
+let currentFontSize = localStorage.getItem('font-size') || 'inherit';
 
 function applyTheme(theme) {
     if (theme === 'dark') {
         document.documentElement.className = 'theme-dark';
-        if (themeToggleText) themeToggleText.textContent = '🌙 主题: 深色';
     } else if (theme === 'light') {
         document.documentElement.className = 'theme-light';
-        if (themeToggleText) themeToggleText.textContent = '☀️ 主题: 浅色';
     } else {
-        document.documentElement.className = '';
-        if (themeToggleText) themeToggleText.textContent = '🌓 主题: 自动';
+        // 'auto' mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            document.documentElement.className = 'theme-light';
+        } else {
+            document.documentElement.className = 'theme-dark';
+        }
     }
+    
+    // Update checkmarks in theme menu
+    document.querySelectorAll('#theme-opt-dark, #theme-opt-light, #theme-opt-auto').forEach(opt => {
+        opt.classList.remove('selected');
+    });
+    const selectedOpt = document.getElementById(`theme-opt-${theme}`);
+    if (selectedOpt) selectedOpt.classList.add('selected');
 }
 
-if (btnThemeToggle) {
-    btnThemeToggle.onclick = () => {
-        if (currentTheme === 'auto') {
-            currentTheme = 'light';
-        } else if (currentTheme === 'light') {
-            currentTheme = 'dark';
-        } else {
-            currentTheme = 'auto';
-        }
+function applyFontsAndSize() {
+    let fontFamily = '';
+    if (currentEnFont !== 'inherit' && currentZhFont !== 'inherit') {
+        fontFamily = `${currentEnFont}, "${currentZhFont}", sans-serif`;
+    } else if (currentEnFont !== 'inherit') {
+        fontFamily = `${currentEnFont}, sans-serif`;
+    } else if (currentZhFont !== 'inherit') {
+        fontFamily = `"${currentZhFont}", sans-serif`;
+    }
+    
+    document.documentElement.style.fontFamily = fontFamily;
+    document.documentElement.style.fontSize = currentFontSize === 'inherit' ? '' : currentFontSize;
+    
+    // Update Chinese font checkmarks
+    document.querySelectorAll('.font-zh-opt').forEach(opt => {
+        opt.classList.toggle('selected', opt.dataset.font === currentZhFont);
+    });
+    
+    // Update English font checkmarks
+    document.querySelectorAll('.font-en-opt').forEach(opt => {
+        opt.classList.toggle('selected', opt.dataset.font === currentEnFont);
+    });
+    
+    // Update Font size checkmarks
+    document.querySelectorAll('.font-size-opt').forEach(opt => {
+        opt.classList.toggle('selected', opt.dataset.size === currentFontSize);
+    });
+}
+
+// Register dropdown option listeners
+document.querySelectorAll('#theme-opt-dark, #theme-opt-light, #theme-opt-auto').forEach(opt => {
+    opt.onclick = (e) => {
+        e.stopPropagation();
+        currentTheme = opt.dataset.value;
         localStorage.setItem('theme', currentTheme);
         applyTheme(currentTheme);
     };
-}
+});
+
+document.querySelectorAll('.font-zh-opt').forEach(opt => {
+    opt.onclick = (e) => {
+        e.stopPropagation();
+        currentZhFont = opt.dataset.font;
+        localStorage.setItem('zh-font', currentZhFont);
+        applyFontsAndSize();
+    };
+});
+
+document.querySelectorAll('.font-en-opt').forEach(opt => {
+    opt.onclick = (e) => {
+        e.stopPropagation();
+        currentEnFont = opt.dataset.font;
+        localStorage.setItem('en-font', currentEnFont);
+        applyFontsAndSize();
+    };
+});
+
+document.querySelectorAll('.font-size-opt').forEach(opt => {
+    opt.onclick = (e) => {
+        e.stopPropagation();
+        currentFontSize = opt.dataset.size;
+        localStorage.setItem('font-size', currentFontSize);
+        applyFontsAndSize();
+    };
+});
 
 // Initial Load
 (async function init() {
     applyTheme(currentTheme);
+    applyFontsAndSize();
     await fetchConfig();
     // If not configured, pop up the settings modal automatically
     if (!localConfig.backup_dest || localConfig.monitored_folders.length === 0) {

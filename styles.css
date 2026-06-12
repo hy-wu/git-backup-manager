@@ -49,6 +49,8 @@
     --badge-pending-bg: #cff0fc;
     --badge-pending-text: #004060;
     --badge-pending-border: #0080a0;
+    
+    --status-value-color: #000080;
 }
 
 /* Dark theme overrides (Fallback to media query if manual theme is not set to light) */
@@ -101,6 +103,8 @@
         --badge-pending-bg: #1a3d54;
         --badge-pending-text: #8cd2fc;
         --badge-pending-border: #146880;
+        
+        --status-value-color: #8cd2fc;
     }
 }
 
@@ -152,6 +156,8 @@
     --badge-pending-bg: #1a3d54;
     --badge-pending-text: #8cd2fc;
     --badge-pending-border: #146880;
+    
+    --status-value-color: #8cd2fc;
 }
 
 * {
@@ -310,11 +316,11 @@ body {
 
 .status-panel {
     background-color: var(--surface-gray);
-    padding: 3px 6px;
+    padding: 4px 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 22px;
+    min-height: 28px;
     box-shadow: 
         inset 1px 1px var(--border-dark), 
         inset -1px -1px var(--border-light), 
@@ -324,12 +330,15 @@ body {
 
 .status-label {
     color: var(--text-muted);
+    white-space: nowrap;
+    margin-right: 8px;
 }
 
 .status-value {
     font-weight: bold;
-    color: #000080;
+    color: var(--status-value-color);
     font-family: monospace;
+    white-space: nowrap;
 }
 
 .filter-bar {
@@ -353,7 +362,7 @@ body {
 
 .filter-bar .search-box input {
     flex-grow: 1;
-    background-color: #ffffff;
+    background-color: var(--input-bg);
     border: none;
     box-shadow: 
         inset 1px 1px var(--border-dark), 
@@ -362,10 +371,10 @@ body {
         inset -2px -2px var(--border-light-gray);
     padding: 3px 6px;
     outline: none;
-    color: #000;
+    color: var(--input-text);
 }
 
-/* Menu Bar */
+/* Menu Bar & Dropdowns */
 .menu-bar {
     display: flex;
     gap: 1px;
@@ -377,11 +386,97 @@ body {
 .menu-item {
     padding: 2px 6px;
     cursor: pointer;
+    position: relative;
+    user-select: none;
 }
 
 .menu-item:hover {
     background-color: var(--titlebar-blue);
     color: var(--text-white);
+}
+
+.dropdown-trigger {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--surface-gray);
+    box-shadow: 
+        inset 1px 1px var(--border-light), 
+        inset -1px -1px var(--border-shadow), 
+        inset 2px 2px var(--border-light-gray), 
+        inset -2px -2px var(--border-dark);
+    padding: 2px;
+    z-index: 1000;
+    min-width: 160px;
+}
+
+/* Show dropdown on hover */
+.dropdown-trigger:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-item-label, .dropdown-item {
+    padding: 4px 24px 4px 24px; /* Space left for checkmark, space right for submenu arrow */
+    white-space: nowrap;
+    cursor: pointer;
+    color: var(--text-color);
+    display: block;
+    position: relative;
+    text-align: left;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu .dropdown-item-label::after {
+    content: "▶";
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8px;
+}
+
+.submenu-content {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    background-color: var(--surface-gray);
+    box-shadow: 
+        inset 1px 1px var(--border-light), 
+        inset -1px -1px var(--border-shadow), 
+        inset 2px 2px var(--border-light-gray), 
+        inset -2px -2px var(--border-dark);
+    padding: 2px;
+    min-width: 160px;
+    z-index: 1001;
+}
+
+.dropdown-submenu:hover .submenu-content {
+    display: block;
+}
+
+.dropdown-item:hover, .dropdown-submenu:hover > .dropdown-item-label {
+    background-color: var(--titlebar-blue);
+    color: var(--text-white) !important;
+}
+
+/* Selected state checkmark */
+.dropdown-item.selected::before {
+    content: "✓";
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    color: inherit;
 }
 
 /* Toolbar */

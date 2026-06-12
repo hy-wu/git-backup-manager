@@ -7,14 +7,33 @@
     <link rel="stylesheet" href="styles.css">
     <script>
         (function() {
-            const theme = localStorage.getItem('theme') || 'auto';
+            const theme = localStorage.getItem('theme') || 'dark';
             if (theme === 'dark') {
                 document.documentElement.className = 'theme-dark';
             } else if (theme === 'light') {
                 document.documentElement.className = 'theme-light';
             } else {
-                document.documentElement.className = '';
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+                    document.documentElement.className = 'theme-light';
+                } else {
+                    document.documentElement.className = 'theme-dark';
+                }
             }
+            
+            // Apply saved font and size settings immediately to prevent flash
+            const zhFont = localStorage.getItem('zh-font') || 'inherit';
+            const enFont = localStorage.getItem('en-font') || 'inherit';
+            const fontSize = localStorage.getItem('font-size') || 'inherit';
+            let fontFamily = '';
+            if (enFont !== 'inherit' && zhFont !== 'inherit') {
+                fontFamily = `${enFont}, "${zhFont}", sans-serif`;
+            } else if (enFont !== 'inherit') {
+                fontFamily = `${enFont}, sans-serif`;
+            } else if (zhFont !== 'inherit') {
+                fontFamily = `"${zhFont}", sans-serif`;
+            }
+            if (fontFamily) document.documentElement.style.fontFamily = fontFamily;
+            if (fontSize !== 'inherit') document.documentElement.style.fontSize = fontSize;
         })();
     </script>
 </head>
@@ -27,7 +46,49 @@
             <div class="menu-bar">
                 <div class="menu-item">文件(F)</div>
                 <div class="menu-item" id="menu-trigger-settings">编辑(E)</div>
-                <div class="menu-item">工具(T)</div>
+                <div class="menu-item dropdown-trigger" id="menu-tools">
+                    工具(T)
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="tools-dropdown">
+                        <div class="dropdown-submenu">
+                            <span class="dropdown-item-label">🌓 主题设定</span>
+                            <div class="submenu-content">
+                                <div class="dropdown-item" id="theme-opt-dark" data-value="dark">🌙 深色主题 (默认)</div>
+                                <div class="dropdown-item" id="theme-opt-light" data-value="light">☀️ 浅色主题</div>
+                                <div class="dropdown-item" id="theme-opt-auto" data-value="auto">🌓 自动 (系统首选)</div>
+                            </div>
+                        </div>
+                        <div class="dropdown-submenu">
+                            <span class="dropdown-item-label">🔤 中文字体</span>
+                            <div class="submenu-content">
+                                <div class="dropdown-item font-zh-opt" data-font="Microsoft YaHei">微软雅黑</div>
+                                <div class="dropdown-item font-zh-opt" data-font="SimSun">宋体 (SimSun)</div>
+                                <div class="dropdown-item font-zh-opt" data-font="SimHei">黑体 (SimHei)</div>
+                                <div class="dropdown-item font-zh-opt" data-font="inherit">系统默认</div>
+                            </div>
+                        </div>
+                        <div class="dropdown-submenu">
+                            <span class="dropdown-item-label">🔤 英文字体</span>
+                            <div class="submenu-content">
+                                <div class="dropdown-item font-en-opt" data-font="Tahoma">Tahoma</div>
+                                <div class="dropdown-item font-en-opt" data-font="Arial">Arial</div>
+                                <div class="dropdown-item font-en-opt" data-font="Times New Roman">Times New Roman</div>
+                                <div class="dropdown-item font-en-opt" data-font="Courier New">Courier New</div>
+                                <div class="dropdown-item font-en-opt" data-font="inherit">系统默认</div>
+                            </div>
+                        </div>
+                        <div class="dropdown-submenu">
+                            <span class="dropdown-item-label">📏 字号大小</span>
+                            <div class="submenu-content">
+                                <div class="dropdown-item font-size-opt" data-size="12px">较小 (12px)</div>
+                                <div class="dropdown-item font-size-opt" data-size="14px">中等 (14px)</div>
+                                <div class="dropdown-item font-size-opt" data-size="16px">较大 (16px)</div>
+                                <div class="dropdown-item font-size-opt" data-size="18px">超大 (18px)</div>
+                                <div class="dropdown-item font-size-opt" data-size="inherit">系统默认</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="menu-item">帮助(H)</div>
             </div>
 
@@ -38,9 +99,6 @@
                 </button>
                 <button id="btn-settings" class="win98-btn">
                     <span class="btn-text">⚙️ 备份同步配置...</span>
-                </button>
-                <button id="btn-theme-toggle" class="win98-btn" style="margin-left: auto;">
-                    <span class="btn-text" id="theme-toggle-text">🌓 主题: 自动</span>
                 </button>
             </div>
 

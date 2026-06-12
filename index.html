@@ -25,13 +25,32 @@
             const enFont = localStorage.getItem('en-font') || 'inherit';
             const fontSize = localStorage.getItem('font-size') || 'inherit';
             let fontFamily = '';
-            if (enFont !== 'inherit' && zhFont !== 'inherit') {
-                fontFamily = `${enFont}, "${zhFont}", sans-serif`;
-            } else if (enFont !== 'inherit') {
-                fontFamily = `${enFont}, sans-serif`;
-            } else if (zhFont !== 'inherit') {
-                fontFamily = `"${zhFont}", sans-serif`;
+            
+            const fontMapZh = {
+                'Microsoft YaHei': ['"Microsoft YaHei"', '"微软雅黑"'],
+                'SimSun': ['"SimSun"', '"宋体"', 'serif'],
+                'SimHei': ['"SimHei"', '"黑体"']
+            };
+            const fontMapEn = {
+                'Tahoma': ['"Tahoma"', 'Geneva'],
+                'Arial': ['"Arial"', 'Helvetica'],
+                'Times New Roman': ['"Times New Roman"', 'Times', 'serif'],
+                'Courier New': ['"Courier New"', 'Courier', 'monospace']
+            };
+            
+            let fontList = [];
+            if (enFont && fontMapEn[enFont]) {
+                fontList = fontList.concat(fontMapEn[enFont]);
             }
+            if (zhFont && fontMapZh[zhFont]) {
+                fontList = fontList.concat(fontMapZh[zhFont]);
+            }
+            if (fontList.length > 0) {
+                fontList.push('sans-serif');
+                fontList = fontList.filter((item, idx) => fontList.indexOf(item) === idx);
+                fontFamily = fontList.join(', ');
+            }
+            
             if (fontFamily) document.documentElement.style.fontFamily = fontFamily;
             if (fontSize !== 'inherit') document.documentElement.style.fontSize = fontSize;
         })();
@@ -125,7 +144,7 @@
             <!-- Filter Bar -->
             <div class="filter-bar">
                 <div class="search-box">
-                    <label for="repo-search" style="font-size: 11px; margin-right: 6px;">过滤项目:</label>
+                    <label for="repo-search" style="margin-right: 6px;">过滤项目:</label>
                     <input type="text" id="repo-search" placeholder="输入关键字筛选项目...">
                 </div>
             </div>

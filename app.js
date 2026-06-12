@@ -529,16 +529,39 @@ function applyTheme(theme) {
 
 function applyFontsAndSize() {
     let fontFamily = '';
-    if (currentEnFont !== 'inherit' && currentZhFont !== 'inherit') {
-        fontFamily = `${currentEnFont}, "${currentZhFont}", sans-serif`;
-    } else if (currentEnFont !== 'inherit') {
-        fontFamily = `${currentEnFont}, sans-serif`;
-    } else if (currentZhFont !== 'inherit') {
-        fontFamily = `"${currentZhFont}", sans-serif`;
+    
+    const fontMapZh = {
+        'Microsoft YaHei': ['"Microsoft YaHei"', '"微软雅黑"'],
+        'SimSun': ['"SimSun"', '"宋体"', 'serif'],
+        'SimHei': ['"SimHei"', '"黑体"']
+    };
+    const fontMapEn = {
+        'Tahoma': ['"Tahoma"', 'Geneva'],
+        'Arial': ['"Arial"', 'Helvetica'],
+        'Times New Roman': ['"Times New Roman"', 'Times', 'serif'],
+        'Courier New': ['"Courier New"', 'Courier', 'monospace']
+    };
+    
+    let fontList = [];
+    if (currentEnFont && fontMapEn[currentEnFont]) {
+        fontList = fontList.concat(fontMapEn[currentEnFont]);
+    }
+    if (currentZhFont && fontMapZh[currentZhFont]) {
+        fontList = fontList.concat(fontMapZh[currentZhFont]);
+    }
+    if (fontList.length > 0) {
+        fontList.push('sans-serif');
+        fontList = fontList.filter((item, idx) => fontList.indexOf(item) === idx);
+        fontFamily = fontList.join(', ');
     }
     
     document.documentElement.style.fontFamily = fontFamily;
     document.documentElement.style.fontSize = currentFontSize === 'inherit' ? '' : currentFontSize;
+    
+    if (document.body) {
+        document.body.style.fontFamily = fontFamily;
+        document.body.style.fontSize = currentFontSize === 'inherit' ? '' : currentFontSize;
+    }
     
     // Update Chinese font checkmarks
     document.querySelectorAll('.font-zh-opt').forEach(opt => {

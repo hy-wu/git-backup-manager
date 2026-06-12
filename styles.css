@@ -166,7 +166,7 @@
     padding: 0;
 }
 
-button, input, select, textarea {
+button, input, select, textarea, label {
     font-family: inherit;
     font-size: inherit;
 }
@@ -181,6 +181,8 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 /* App Layout Grid (Filling entire window) */
@@ -329,9 +331,19 @@ body {
 }
 
 .status-label {
-    color: var(--text-muted);
+    color: #000000;
     white-space: nowrap;
     margin-right: 8px;
+}
+
+.theme-dark .status-label {
+    color: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not(.theme-light) .status-label {
+        color: #ffffff;
+    }
 }
 
 .status-value {
